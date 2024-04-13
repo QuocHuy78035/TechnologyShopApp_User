@@ -5,15 +5,127 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.main.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarHomeScreen"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#ff00dfff"
+                android:gravity="center">
+                
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="31dp"
+                    android:src="@drawable/ic_logo_splash"/>
+
+                <LinearLayout
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="?attr/actionBarSize">
+
+                    <FrameLayout
+                        android:id="@+id/frameGioHang"
+                        android:layout_width="55dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        tools:ignore="RtlHardcoded">
+
+                        <com.nex3z.notificationbadge.NotificationBadge
+                            android:id="@+id/menu_sl"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="top|right" />
+
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="15dp"
+                            android:src="@drawable/ic_cart" />
+
+                    </FrameLayout>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        app:civ_border_width="4dp"
+                        android:layout_marginRight="10dp"
+                        app:civ_border_color="#FF000000"
+                        android:id="@+id/imgAvtProfile"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="MissingConstraints"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="Search any Product"
+                android:id="@+id/inputSearch"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <ViewFlipper
+                android:id="@+id/viewflippermanhinhchinh"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#5992d2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm mới nhất"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="20sp"
+                    android:textStyle="bold">
+                </TextView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycleview"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/navigationviewmanhinhchinh"
+            android:layout_gravity="start">
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/listviewmanhinhchinh"/>
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
