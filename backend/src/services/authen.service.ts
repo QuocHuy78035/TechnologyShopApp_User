@@ -157,7 +157,9 @@ export class AuthenService {
       throw new BadRequestException('Error: Please enter email or password!');
     }
 
-    const user = await this.userModel.findOne({ email: body.email });
+    const user = await this.userModel
+      .findOne({ email: body.email })
+      .select('+password');
     if (!user) {
       throw new UnauthorizedException('Error: Incorrect email or password!');
     }

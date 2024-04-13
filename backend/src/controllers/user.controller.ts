@@ -72,4 +72,16 @@ export class UserController {
       ...body,
     });
   }
+
+  @Patch('tokenFirebase')
+  @HttpCode(200)
+  async updateTokenFirebase(
+    @Body()
+    body: {
+      tokenFirebase: string;
+      userId: string;
+    },
+  ) {
+    return await this.userService.updateTokenFirebase(body);
+  }
 }

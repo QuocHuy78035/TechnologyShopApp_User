@@ -3,5 +3,5 @@ export const FIREBASE_CONFIG = {
   authDomain: 'dd-project-ed538.firebaseapp.com',
   projectId: 'dd-project-ed538',
   storageBucket: 'dd-project-ed538.appspot.com',
-  appId: '1:615003143018:android:eb84134e9aed0fffacc313',
+  appId: '1:615003143018:android:d1fec38c2b96d929acc313',
 };

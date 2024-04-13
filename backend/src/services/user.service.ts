@@ -49,4 +49,15 @@ export class UserService {
       metadata: 'Update password successfullly',
     };
   }
+  async updateTokenFirebase(body: { tokenFirebase: string; userId: string }) {
+    const checkUserExists = await this.userRepo.checkUserExists(body.userId);
+
+    return {
+      status: 200,
+      message: 'Updata token firebase successfully!',
+      metadata: {
+        user: await this.userRepo.updateTokenFirebase(body),
+      },
+    };
+  }
 }

@@ -52,6 +52,7 @@ export class User {
   @Prop({
     type: String,
     required: [true, 'Please provide your password!'],
+    select: false,
   })
   password: string;
 
@@ -81,6 +82,9 @@ export class User {
 
   @Prop({ type: Date })
   OTPExpires: Date;
+
+  @Prop({ type: String })
+  tokenFirebase: String;
 
   matchPassword: Function;
 }

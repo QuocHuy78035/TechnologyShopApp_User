@@ -3,6 +3,7 @@ import { AuthenModule } from './modules/authen.module';
 import { MongoModule } from './modules/mongo.module';
 import { KeyTokenModule } from './modules/keytoken.module';
 import { UserModule } from './modules/user.module';
+import { CategoryModule } from './modules/category.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { UserModule } from './modules/user.module';
     AuthenModule,
     KeyTokenModule,
     UserModule,
+    CategoryModule
   ],
 })
 export class AppModule implements NestModule {
