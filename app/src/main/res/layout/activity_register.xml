@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Pass"
-            android:id="@+id/inputPassDangKy"
+            android:id="@+id/inputPassRegister"
             android:drawableLeft="@drawable/ic_pass"
             android:drawablePadding="5dp"
             android:layout_marginLeft="10dp"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Pass Confirm"
-            android:id="@+id/inputPassConfirmDangKy"
+            android:id="@+id/inputPassConfirmRegister"
             android:drawableLeft="@drawable/ic_pass"
             android:drawablePadding="5dp"
             android:layout_marginLeft="10dp"
@@ -86,7 +86,7 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnDangKy"
+        android:id="@+id/btnRegister"
         app:layout_constraintTop_toBottomOf="@+id/inputRegisterLine3"
         android:text="Register"/>
 
@@ -97,18 +97,18 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/btnDangKy">
+        app:layout_constraintTop_toBottomOf="@id/btnRegister">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:text= "Đã có tài khoản?"/>
+            android:text= "Already have an account?"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="đăng nhập"
-            android:id="@+id/txtNavigatorDangNhap"
+            android:text="login"
+            android:id="@+id/txtNavigatorLogin"
             android:textColor="@android:color/holo_red_light"
             android:textSize="15dp"
             android:layout_marginLeft="5dp"/>

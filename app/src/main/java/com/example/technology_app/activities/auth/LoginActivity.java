@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
+    TextView txtNavigatorDangKi;
     Api api;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -51,6 +53,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initControl() {
+        txtNavigatorDangKi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.inputEmailLogin);
         pass = findViewById(R.id.inputPassLogin);
         btnLogin = findViewById(R.id.btnLogin);
+        txtNavigatorDangKi = findViewById(R.id.txtNavigatorDangKi);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
