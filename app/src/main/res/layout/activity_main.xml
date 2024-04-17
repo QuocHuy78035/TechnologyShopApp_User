@@ -8,7 +8,7 @@
     tools:context=".activities.main.MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerlayout"
+        android:id="@+id/drawerlayoutHomeScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,11 +19,12 @@
 
 
             <androidx.appcompat.widget.Toolbar
+                android:layout_marginTop="20dp"
                 android:id="@+id/toolbarHomeScreen"
                 android:layout_width="match_parent"
+                app:title=" "
                 android:layout_height="?attr/actionBarSize"
-                android:background="#ff00dfff"
-                android:gravity="center">
+                android:background="#ff00dfff">
                 
                 <ImageView
                     android:layout_width="130dp"
@@ -41,7 +42,6 @@
                         android:layout_width="55dp"
                         android:layout_height="?attr/actionBarSize"
                         android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
                         tools:ignore="RtlHardcoded">
 
                         <com.nex3z.notificationbadge.NotificationBadge
@@ -60,9 +60,7 @@
                     </FrameLayout>
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        app:civ_border_width="4dp"
                         android:layout_marginRight="10dp"
-                        app:civ_border_color="#FF000000"
                         android:id="@+id/imgAvtProfile"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -89,7 +87,7 @@
                 android:layout_marginRight="10dp"/>
 
             <ViewFlipper
-                android:id="@+id/viewflippermanhinhchinh"
+                android:id="@+id/viewflipperHomeScreen"
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
@@ -110,7 +108,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/recycleview"
+                    android:id="@+id/recycleviewHomeScreen"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="5dp"/>
             </LinearLayout>
@@ -124,7 +122,7 @@
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/listviewmanhinhchinh"/>
+                android:id="@+id/listviewHomeScreen"/>
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 

@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
                 }catch (Exception e){
 
                 }finally {
-                    if(Paper.book().read("user") == null){
+                    if(Paper.book().read("accessToken") == null){
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         finish();
@@ -40,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
+
 
                 }
             }
