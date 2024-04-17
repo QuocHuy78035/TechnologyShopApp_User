@@ -13,13 +13,9 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.technology_app.R;
 import com.example.technology_app.activities.main.MainActivity;
-import com.example.technology_app.models.User;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
@@ -28,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -64,19 +62,23 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter your Password", Toast.LENGTH_SHORT).show();
                 } else {
                     //post data
-                    Paper.book().write("email", emailLogin);
-                    Paper.book().write("pass", passLogin);
                     if (user != null) {
+                        Log.v("Check user Id null", "null");
                         //user da dang nhap firebase
                         login(emailLogin, passLogin);
                     } else {
                         //user da dang xuat khoi firebase => dang nhap lai
+                        Log.v("Check user log out", "null");
+                        Log.v("Email", emailLogin);
                         firebaseAuth.signInWithEmailAndPassword(emailLogin, passLogin)
                                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+                                            user = firebaseAuth.getCurrentUser(); // Cập nhật user
                                             login(emailLogin, passLogin);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(),  "Authentication failed!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -95,10 +97,16 @@ public class LoginActivity extends AppCompatActivity {
                         userModel -> {
                             if (userModel.statusCode == 200) {
                                 Toast.makeText(getApplicationContext(), "Success: " + userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("Email1", "Success: " + userModel.getMetadata().user.email);
+                                Log.d("Email12", "Success: " + userModel.getMetadata().getUser().getEmail());
 
-                                GlobalVariable.currentUser = userModel.metadata.user;
-                                Paper.book().write("currentUser", userModel.metadata.user);
+
+                                Paper.book().write("userId", userModel.getMetadata().getUser().get_id());
+                                Paper.book().write("email", userModel.getMetadata().getUser().getEmail());
+                                Paper.book().write("accessToken", userModel.getMetadata().getTokens().getAccessToken());
+                                Paper.book().write("refreshToken", userModel.getMetadata().getTokens().getRefreshToken());
                                 Paper.book().write("password", pass);
+                                Paper.book().write("tokenFirebase", userModel.getMetadata().getUser().getTokenFirebase());
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -115,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        Paper.init(this);
         email = findViewById(R.id.inputEmailLogin);
         pass = findViewById(R.id.inputPassLogin);
         btnLogin = findViewById(R.id.btnLogin);
@@ -122,11 +131,9 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        if (Paper.book().read("currentUser") != null && Paper.book().read("pass") != null) {
-            User user = Paper.book().read("currentUser");
-            assert user != null;
-            email.setText(user.getEmail());
-            pass.setText(Paper.book().read("pass"));
+        if (Paper.book().read("accessToken") != null) {
+            email.setText(Objects.requireNonNull(Paper.book().read("email")).toString());
+            pass.setText(Objects.requireNonNull(Paper.book().read("pass")).toString());
             if (Paper.book().read("isLogin") != null) {
                 new Handler().postDelayed(new Runnable() {
                     @Override

@@ -40,10 +40,83 @@ public class UserModel{
     public static class Metadata{
         public User user;
         public Tokens tokens;
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+
+        public Tokens getTokens() {
+            return tokens;
+        }
+
+        public void setTokens(Tokens tokens) {
+            this.tokens = tokens;
+        }
+    }
+
+    public  static class User{
+        public  String _id;
+        public  String name;
+        public  String email;
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getTokenFirebase() {
+            return tokenFirebase;
+        }
+
+        public void setTokenFirebase(String tokenFirebase) {
+            this.tokenFirebase = tokenFirebase;
+        }
+
+        public  String tokenFirebase;
     }
 
     public static class Tokens{
         public String accessToken;
+
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public void setAccessToken(String accessToken) {
+            this.accessToken = accessToken;
+        }
+
+        public String getRefreshToken() {
+            return refreshToken;
+        }
+
+        public void setRefreshToken(String refreshToken) {
+            this.refreshToken = refreshToken;
+        }
+
         public String refreshToken;
     }
 }
