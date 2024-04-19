@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.activities.auth.LoginActivity;
+import com.example.technology_app.activities.chat.ChatActivity;
 import com.example.technology_app.activities.products.LaptopActivity;
 import com.example.technology_app.adapters.CategoryAdapter;
 import com.example.technology_app.models.CategoryModel;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar();
         getCategory();
         getInfoUser();
-        pushNotification();
+        //pushNotification();
         getEventClick();
     }
 
@@ -153,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
                                 if (categoryModel.getMetadata() != null) {
                                     listCate = categoryModel.getMetadata().getCategories();
                                     listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+                                    listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
                                 } else {
@@ -192,8 +195,14 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(laptop);
                         break;
                     case 2:
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(login);
+                        Intent signout = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(signout);
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        break;
+                    case 3:
+                        Intent chat = new Intent(getApplicationContext(), ChatActivity.class);
+                        startActivity(chat);
                         FirebaseAuth.getInstance().signOut();
                         finish();
                         break;

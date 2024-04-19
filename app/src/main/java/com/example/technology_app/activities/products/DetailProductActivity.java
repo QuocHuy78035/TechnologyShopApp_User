@@ -1,8 +1,10 @@
 package com.example.technology_app.activities.products;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -23,7 +25,7 @@ import java.text.DecimalFormat;
 
 public class DetailProductActivity extends AppCompatActivity {
     TextView txtProductName, txtProductPrice, txtProductDes;
-    Button btnAddToCart;
+    Button btnAddToCart, btnWatchVid;
     ImageView imgProduct;
     ProductModel.Product product;
     Spinner spinner;
@@ -56,7 +58,13 @@ public class DetailProductActivity extends AppCompatActivity {
     }
 
     private void initControl() {
-
+        btnWatchVid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), VidDemoProductActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
@@ -69,5 +77,6 @@ public class DetailProductActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         btnAddToCart = findViewById(R.id.btnAddToCart);
         toolbar = findViewById(R.id.toolbar_detailProduct);
+        btnWatchVid = findViewById(R.id.btnWatchVid);
     }
 }

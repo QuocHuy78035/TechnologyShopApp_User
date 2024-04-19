@@ -74,4 +74,8 @@ dependencies {
 
     //bo tron hinh
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    //watch vid on ytb
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
 }
