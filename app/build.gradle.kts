@@ -41,6 +41,11 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
+    implementation(fileTree(mapOf(
+        "dir" to "D:\\TranHuuQuocHuy-21110888\\HK6_3\\LTDiDong\\Zalopay",
+        "include" to listOf("*.aar", "*.jar"),
+        //"exclude" to listOf()
+    )))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -78,4 +83,7 @@ dependencies {
     //watch vid on ytb
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
+    //zalo pay
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
 }

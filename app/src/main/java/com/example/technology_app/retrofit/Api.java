@@ -1,5 +1,6 @@
 package com.example.technology_app.retrofit;
 
+import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
 import com.example.technology_app.models.ProductModel;
 import com.example.technology_app.models.UserInfoModel;
@@ -20,11 +21,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Api {
-
-    String userId = Paper.book().read("userId");
-    String accessToken = Paper.book().read("accessToken");
-    String id = "";
-
     @POST("login")
     @FormUrlEncoded
     Observable<UserModel> login(
@@ -54,5 +50,14 @@ public interface Api {
 
     @GET("product/{productId}")
     Observable<ProductModel> getDetailProduct(@Path("productId") String productId);
+
+    @POST("cart")
+    @FormUrlEncoded
+    Observable<CartModel> addToCart(
+            @Header("x-client-id") String userId,
+            @Header("authorization") String author,
+            @Field("product") String productId,
+            @Field("quantity") int quantity
+    );
 
 }
