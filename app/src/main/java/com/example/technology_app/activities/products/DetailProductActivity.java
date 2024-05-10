@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +20,17 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.retrofit.Api;
+import com.example.technology_app.retrofit.RetrofitClient;
+import com.example.technology_app.utils.GlobalVariable;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.text.DecimalFormat;
+
+import io.paperdb.Paper;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DetailProductActivity extends AppCompatActivity {
     TextView txtProductName, txtProductPrice, txtProductDes;
@@ -32,12 +41,15 @@ public class DetailProductActivity extends AppCompatActivity {
     Toolbar toolbar;
     NotificationBadge notificationBadge;
     FrameLayout frameLayout;
+    Api api;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detail_product);
+        Paper.init(this);
         initView();
         initControl();
         initData();
@@ -65,6 +77,42 @@ public class DetailProductActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userId = Paper.book().read("userId");
+                String accessToken = Paper.book().read("accessToken");
+
+                if(userId != null && accessToken != null){
+                    Log.d("Success", userId);
+                    Log.d("Success", accessToken);
+
+                    compositeDisposable.add(api.addToCart(userId, accessToken, product.get_id(), 1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    cartModel -> {
+                                        if (cartModel.status == 200) {
+                                            Log.d("Success", "add to cart Success");
+                                        }else{
+                                            Log.d("Fail", "add to cart Fail");
+                                        }
+                                    },
+                                    throwable -> {
+                                        Log.d( "Log","123"+ throwable.getMessage());
+                                        Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                            )
+                    );
+                }else{
+                    Toast.makeText(getApplicationContext(), "Token or UserId is null", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
     }
 
     private void initView() {
@@ -78,5 +126,12 @@ public class DetailProductActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddToCart);
         toolbar = findViewById(R.id.toolbar_detailProduct);
         btnWatchVid = findViewById(R.id.btnWatchVid);
+        api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }
