@@ -28,6 +28,35 @@ public interface Api {
             @Field("password") String password
     );
 
+    @POST("signup")
+    @FormUrlEncoded
+    Observable<UserModel> signup(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("passwordConfirm") String passwordConfirm
+    );
+
+    @POST("verify?type=signUp")
+    @FormUrlEncoded
+    Observable<UserModel> verifyCodeForSignUp(
+            @Field("email") String name,
+            @Field("OTP") String otp
+    );
+
+    @POST("verify?type=forgotPwd")
+    @FormUrlEncoded
+    Observable<UserModel> verifyCodeForForgotPass(
+            @Field("email") String name,
+            @Field("OTP") String otp
+    );
+
+    @POST("forgotPassword")
+    @FormUrlEncoded
+    Observable<UserModel> forgotPass(
+            @Field("email") String name
+    );
+
     @PATCH("user/tokenFirebase")
     @FormUrlEncoded
     Observable<UserModel> updateFirebaseToken(

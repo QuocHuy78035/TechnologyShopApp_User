@@ -100,6 +100,7 @@ public class UserModel{
 
     public static class Tokens{
         public String accessToken;
+        public String refreshToken;
 
         public String getAccessToken() {
             return accessToken;
@@ -116,8 +117,6 @@ public class UserModel{
         public void setRefreshToken(String refreshToken) {
             this.refreshToken = refreshToken;
         }
-
-        public String refreshToken;
     }
 }
 

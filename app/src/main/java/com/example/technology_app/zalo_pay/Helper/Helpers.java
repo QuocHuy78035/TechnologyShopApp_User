@@ -2,8 +2,6 @@ package com.example.technology_app.zalo_pay.Helper;
 
 import android.annotation.SuppressLint;
 
-//import com.zlpdemo.merchantDemo.Helper.HMac.HMacUtil;
-
 import com.example.technology_app.zalo_pay.Helper.HMac.HMacUtil;
 
 import org.jetbrains.annotations.NotNull;

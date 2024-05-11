@@ -3,11 +3,13 @@ package com.example.technology_app.activities.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +37,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
+    boolean isShowPass = true;
     EditText email, pass;
     Button btnLogin;
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
     TextView txtNavigatorDangKi;
+    ImageView iconPass;
     Api api;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -95,6 +99,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        iconPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShowPass){
+                    isShowPass = false;
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_hide);
+                }else{
+                    isShowPass = true;
+                    pass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_show);
+                }
+                pass.setSelection(pass.length());
+            }
+        });
     }
 
     private void login(String email, String pass) {
@@ -106,16 +125,12 @@ public class LoginActivity extends AppCompatActivity {
                         userModel -> {
                             if (userModel.statusCode == 200) {
                                 Toast.makeText(getApplicationContext(), "Success: " + userModel.getMessage(), Toast.LENGTH_SHORT).show();
-                                Log.d("Email1", "Success: " + userModel.getMetadata().user.email);
-                                Log.d("Email12", "Success: " + userModel.getMetadata().getUser().getEmail());
-
-
                                 Paper.book().write("userId", userModel.getMetadata().getUser().get_id());
                                 Paper.book().write("email", userModel.getMetadata().getUser().getEmail());
                                 Paper.book().write("accessToken", userModel.getMetadata().getTokens().getAccessToken());
                                 Paper.book().write("refreshToken", userModel.getMetadata().getTokens().getRefreshToken());
                                 Paper.book().write("password", pass);
-                                Paper.book().write("tokenFirebase", userModel.getMetadata().getUser().getTokenFirebase());
+                                //Paper.book().write("tokenFirebase", userModel.getMetadata().getUser().getTokenFirebase());
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -136,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.inputEmailLogin);
         pass = findViewById(R.id.inputPassLogin);
         btnLogin = findViewById(R.id.btnLogin);
+        iconPass = findViewById(R.id.passIcon);
         txtNavigatorDangKi = findViewById(R.id.txtNavigatorDangKi);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
         firebaseAuth = FirebaseAuth.getInstance();

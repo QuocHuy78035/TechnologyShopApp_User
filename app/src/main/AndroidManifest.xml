@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.auth.VerifySignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.payment.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.products.VidDemoProductActivity"
             android:exported="false" />
         <activity

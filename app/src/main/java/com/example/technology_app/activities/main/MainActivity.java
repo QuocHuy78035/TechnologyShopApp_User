@@ -155,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
                                     listCate = categoryModel.getMetadata().getCategories();
                                     listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
-
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
+                                    Log.d("CategoryTest", String.valueOf(listCate.size()));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No categories available", Toast.LENGTH_SHORT).show();
                                 }
@@ -195,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(laptop);
                         break;
                     case 2:
-                        Intent signout = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(signout);
+                        Intent signOut = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(signOut);
                         FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
