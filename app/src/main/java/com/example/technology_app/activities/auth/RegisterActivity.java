@@ -2,25 +2,22 @@ package com.example.technology_app.activities.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.technology_app.R;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -29,6 +26,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edtEmail, edtUserName, edtPass, edtPassConfirm;
+    boolean isShowPass = true;
+    ImageView iconPass, iconPassConfirm;
+    boolean isShowPassConfirm = true;
+
     TextView txtNavigatorLogin;
 
     Button btnRegister;
@@ -45,7 +46,43 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initControl() {
-        register();
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
+            }
+        });
+        iconPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShowPass){
+                    isShowPass = false;
+                    edtPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_hide);
+                }else{
+                    isShowPass = true;
+                    edtPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_show);
+                }
+                edtPass.setSelection(edtPass.length());
+            }
+        });
+
+        iconPassConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShowPassConfirm){
+                    isShowPassConfirm = false;
+                    edtPassConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_hide);
+                }else{
+                    isShowPassConfirm = true;
+                    edtPassConfirm.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    iconPass.setImageResource(R.drawable.ic_pass_show);
+                }
+                edtPassConfirm.setSelection(edtPassConfirm.length());
+            }
+        });
     }
 
     private void register() {
@@ -102,6 +139,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         txtNavigatorLogin = findViewById(R.id.txtNavigatorLogin);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
+        iconPass = findViewById(R.id.passIconRegister);
+        iconPassConfirm = findViewById(R.id.passIconPassConfirmRegister);
     }
 
     @Override
