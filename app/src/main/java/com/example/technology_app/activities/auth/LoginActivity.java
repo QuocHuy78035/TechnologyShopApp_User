@@ -76,13 +76,10 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     //post data
                     if (user != null) {
-                        Log.v("Check user Id null", "null");
                         //user da dang nhap firebase
                         login(emailLogin, passLogin);
                     } else {
                         //user da dang xuat khoi firebase => dang nhap lai
-                        Log.v("Check user log out", "null");
-                        Log.v("Email", emailLogin);
                         firebaseAuth.signInWithEmailAndPassword(emailLogin, passLogin)
                                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
@@ -139,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         },
                         throwable -> {
-                            Log.d("Log", "123" + throwable.getMessage());
                             Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 )
