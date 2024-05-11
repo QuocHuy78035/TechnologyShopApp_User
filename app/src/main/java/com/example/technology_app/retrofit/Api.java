@@ -3,6 +3,7 @@ package com.example.technology_app.retrofit;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
 import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.SignUp;
 import com.example.technology_app.models.UserInfoModel;
 import com.example.technology_app.models.UserModel;
 import com.google.firebase.auth.UserInfo;
@@ -30,7 +31,7 @@ public interface Api {
 
     @POST("signup")
     @FormUrlEncoded
-    Observable<UserModel> signup(
+    Observable<SignUp> signup(
             @Field("name") String name,
             @Field("email") String email,
             @Field("password") String password,

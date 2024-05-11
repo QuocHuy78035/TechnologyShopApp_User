@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     Button btnRegister;
     Api api;
-    CompositeDisposable compositeDisposable;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +67,25 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        txtNavigatorLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         iconPassConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isShowPassConfirm){
                     isShowPassConfirm = false;
                     edtPassConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    iconPass.setImageResource(R.drawable.ic_pass_hide);
+                    iconPassConfirm.setImageResource(R.drawable.ic_pass_hide);
                 }else{
                     isShowPassConfirm = true;
                     edtPassConfirm.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    iconPass.setImageResource(R.drawable.ic_pass_show);
+                    iconPassConfirm.setImageResource(R.drawable.ic_pass_show);
                 }
                 edtPassConfirm.setSelection(edtPassConfirm.length());
             }
@@ -105,21 +112,19 @@ public class RegisterActivity extends AppCompatActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                userModel -> {
-                                    if (userModel.getStatusCode() == 200) {
-
+                                signUp -> {
+                                    if (signUp.getStatus() == 201) {
                                         Paper.book().write("password", pass);
-//                                        Utils.currentUser.setEmail(email);
-//                                        Utils.currentUser.setPass(pass);
-                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), VerifySignUpActivity.class);
+                                        intent.putExtra("email", email);
+                                        intent.putExtra("pass", pass);
                                         startActivity(intent);
                                         finish();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "Fail: " + userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Fail: " + signUp.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 },
                                 throwable -> {
-                                    Log.d("Log", "123" + throwable.getMessage());
                                     Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                         )
