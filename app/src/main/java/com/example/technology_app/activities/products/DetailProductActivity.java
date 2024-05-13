@@ -120,6 +120,7 @@ public class DetailProductActivity extends AppCompatActivity {
                                         }
                                     },
                                     throwable -> {
+                                        Log.d("SuccessFail", "" + throwable.getMessage());
                                         Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                             )
@@ -186,6 +187,7 @@ public class DetailProductActivity extends AppCompatActivity {
                             }
                         },
                         throwable -> {
+
                             Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 )
