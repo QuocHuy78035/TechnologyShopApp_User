@@ -25,7 +25,9 @@ import com.example.technology_app.R;
 import com.example.technology_app.activities.auth.LoginActivity;
 import com.example.technology_app.activities.chat.ChatActivity;
 import com.example.technology_app.activities.products.LaptopActivity;
+import com.example.technology_app.activities.products.RamActivity;
 import com.example.technology_app.adapters.CategoryAdapter;
+import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
 import com.example.technology_app.models.NotiSendData;
 import com.example.technology_app.retrofit.Api;
@@ -36,6 +38,8 @@ import com.example.technology_app.utils.GlobalVariable;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.nex3z.notificationbadge.NotificationBadge;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     Api api;
     List<CategoryModel.Category> listCate;
+    NotificationBadge notificationBadge;
     ListView listView;
     CategoryAdapter categoryAdapter;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerView;
+    CartModel cartModelView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +177,34 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    void getCartUser(){
+        String userId = Paper.book().read("userId");
+        String accessToken = Paper.book().read("accessToken");
+        compositeDisposable.add(api.getAllCart(userId, accessToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        cartModel -> {
+                            if (cartModel.getStatus() == 200) {
+                                cartModelView = cartModel;
+                                Log.d("Size1" , "" + cartModelView.getMetadata().getCart().getItems().size());
+                                Log.d("Success", "get cart Success");
+
+                                if(cartModelView != null){
+                                    Log.d("Size2", "" + cartModelView.getMetadata().getCart().getItems().size());
+                                    notificationBadge.setText(String.valueOf(cartModelView.getMetadata().getCart().getItems().size()));
+                                }
+                            }else{
+                                Log.d("Fail", "get cart Fail");
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
+    }
+
 
     private void getEventClick() {
 //        imgSearch.setOnClickListener(new View.OnClickListener() {
@@ -190,17 +224,17 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(ram);
                         break;
                     case  1:
-                        Intent laptop = new Intent(getApplicationContext(), LaptopActivity.class);
+                        Intent laptop = new Intent(getApplicationContext(), RamActivity.class);
                         laptop.putExtra("cateId", listCate.get(1).get_id());
                         startActivity(laptop);
                         break;
-                    case 2:
+                    case 4:
                         Intent signOut = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(signOut);
                         FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
-                    case 3:
+                    case 5:
                         Intent chat = new Intent(getApplicationContext(), ChatActivity.class);
                         startActivity(chat);
                         FirebaseAuth.getInstance().signOut();
@@ -259,7 +293,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycleviewHomeScreen);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        getCartUser();
+        notificationBadge = findViewById(R.id.menu_sl_home);
     }
 
     @Override

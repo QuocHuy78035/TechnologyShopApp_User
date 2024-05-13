@@ -23,13 +23,13 @@ import com.example.technology_app.models.ProductModel;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class LaptopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class RamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     Context context;
     List<ProductModel.Product> array;
 
     private static final int VIEW_TYPE_DATA = 0;
     private static final int VIEW_TYPE_LOADING = 1;
-    public LaptopAdapter(Context context, List<ProductModel.Product> array) {
+    public RamAdapter(Context context, List<ProductModel.Product> array) {
         this.context = context;
         this.array = array;
     }
@@ -59,9 +59,8 @@ public class LaptopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 myViewHolder.txtMota.setText(product.getDescription());
             }
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            String priceString = product.getPrice();
-            double price = Double.parseDouble(priceString);
-            myViewHolder.txtGia.setText("Price: "+ decimalFormat.format(price) +"đ");
+            //myViewHolder.txtGia.setText("Price: "+ decimalFormat.format(product.getPrice()) +"đ");
+            myViewHolder.txtGia.setText("Price: "+ product.getPrice());
             Glide.with(context).load(product.getImages().get(0)).into(myViewHolder.imgHinhAnh);
             Log.d("image", product.getImages().get(0));
             myViewHolder.setItemClickListener(new IItemClickListener() {

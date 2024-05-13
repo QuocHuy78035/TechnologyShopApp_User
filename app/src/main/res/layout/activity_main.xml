@@ -45,7 +45,7 @@
                         tools:ignore="RtlHardcoded">
 
                         <com.nex3z.notificationbadge.NotificationBadge
-                            android:id="@+id/menu_sl"
+                            android:id="@+id/menu_sl_home"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_gravity="top|right" />
