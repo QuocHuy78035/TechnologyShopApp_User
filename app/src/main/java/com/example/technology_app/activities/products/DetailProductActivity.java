@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.models.CartModel;
-import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.Products.Laptop.ProductDetail;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
@@ -39,7 +39,7 @@ public class DetailProductActivity extends AppCompatActivity {
     TextView txtProductName, txtProductPrice, txtProductDes;
     Button btnAddToCart, btnWatchVid;
     ImageView imgProduct;
-    ProductModel.Product product;
+    ProductDetail product;
     Spinner spinner;
     Toolbar toolbar;
     NotificationBadge notificationBadge;
@@ -48,6 +48,7 @@ public class DetailProductActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     int quantity;
 
+    //CartModel cartModelView;
     CartModel cartModelView;
 
     @Override
@@ -63,10 +64,12 @@ public class DetailProductActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initData() {
-        product = (ProductModel.Product) getIntent().getSerializableExtra("detailProduct");
+        product = (ProductDetail) getIntent().getSerializableExtra("detailProduct");
+        assert product != null;
+        Log.d("Test123123123", product.getName());
         assert product != null;
         txtProductName.setText(product.getName());
-        txtProductDes.setText(product.getDescription());
+        txtProductDes.setText(product.getInformation());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         //txtProductPrice.setText(decimalFormat.format(product.getPrice()) +"đ");
         txtProductPrice.setText((product.getPrice()));
@@ -147,14 +150,14 @@ public class DetailProductActivity extends AppCompatActivity {
         getCartUser();
 
 
-//        frameLayout = findViewById(R.id.frameGioHang);
-//        frameLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
-//                startActivity(cart);
-//            }
-//        });
+        //frameLayout = findViewById(R.id.frameGioHang);
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(cart);
+            }
+        });
 
 //        if(Utils.mangGioHang != null){
 //            int totalItem = 0;
@@ -168,7 +171,7 @@ public class DetailProductActivity extends AppCompatActivity {
     void getCartUser(){
         String userId = Paper.book().read("userId");
         String accessToken = Paper.book().read("accessToken");
-        compositeDisposable.add(api.getAllCart(userId, accessToken)
+        compositeDisposable.add(api.getCartUser(userId, accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

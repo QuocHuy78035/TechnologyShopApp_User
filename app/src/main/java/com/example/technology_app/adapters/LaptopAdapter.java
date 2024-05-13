@@ -18,18 +18,18 @@ import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.activities.products.DetailProductActivity;
 import com.example.technology_app.interfaces.IItemClickListener;
-import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.Products.Laptop.ProductDetail;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class LaptopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     Context context;
-    List<ProductModel.Product> array;
+    List<ProductDetail> array;
 
     private static final int VIEW_TYPE_DATA = 0;
     private static final int VIEW_TYPE_LOADING = 1;
-    public LaptopAdapter(Context context, List<ProductModel.Product> array) {
+    public LaptopAdapter(Context context, List<ProductDetail> array) {
         this.context = context;
         this.array = array;
     }
@@ -51,19 +51,18 @@ public class LaptopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof  MyViewHolder){
             MyViewHolder myViewHolder =  (MyViewHolder) holder;
-            ProductModel.Product product = array.get(position);
+            ProductDetail product = array.get(position);
             if(myViewHolder.txtTen != null && product.getName() != null) {
                 myViewHolder.txtTen.setText(product.getName());
             }
             if(myViewHolder.txtMota != null && product.getDescription() != null) {
-                myViewHolder.txtMota.setText(product.getDescription());
+                myViewHolder.txtMota.setText(product.getInformation());
             }
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            String priceString = product.getPrice();
-            double price = Double.parseDouble(priceString);
-            myViewHolder.txtGia.setText("Price: "+ decimalFormat.format(price) +"đ");
+            String priceString = product.getSale_price();
+            //double price = Double.parseDouble(priceString);
+            myViewHolder.txtGia.setText("Price: "+ priceString +"đ");
             Glide.with(context).load(product.getImages().get(0)).into(myViewHolder.imgHinhAnh);
-            Log.d("image", product.getImages().get(0));
             myViewHolder.setItemClickListener(new IItemClickListener() {
                 @Override
                 public void onClick(View view, int pos, boolean isLongClicked) {

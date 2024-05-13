@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.activities.auth.LoginActivity;
+import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.activities.chat.ChatActivity;
 import com.example.technology_app.activities.products.LaptopActivity;
 import com.example.technology_app.activities.products.RamActivity;
@@ -62,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
     CategoryAdapter categoryAdapter;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerView;
+    //CartModel cartModelView;
     CartModel cartModelView;
+    FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
         getInfoUser();
         //pushNotification();
         getEventClick();
+
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(cart);
+            }
+        });
     }
 
     private void pushNotification(){
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                                     listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
-                                    Log.d("CategoryTest", String.valueOf(listCate.size()));
+
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No categories available", Toast.LENGTH_SHORT).show();
                                 }
@@ -180,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     void getCartUser(){
         String userId = Paper.book().read("userId");
         String accessToken = Paper.book().read("accessToken");
-        compositeDisposable.add(api.getAllCart(userId, accessToken)
+        compositeDisposable.add(api.getCartUser(userId, accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -200,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         },
                         throwable -> {
                             Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Loi!!!", "get cart Fail" + throwable.getMessage());
                         }
                 )
         );
@@ -224,8 +238,13 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(ram);
                         break;
                     case  1:
-                        Intent laptop = new Intent(getApplicationContext(), RamActivity.class);
-                        laptop.putExtra("cateId", listCate.get(1).get_id());
+                        Intent maytinh = new Intent(getApplicationContext(), RamActivity.class);
+                        maytinh.putExtra("cateId", listCate.get(1).get_id());
+                        startActivity(maytinh);
+                        break;
+                    case  2:
+                        Intent laptop = new Intent(getApplicationContext(), LaptopActivity.class);
+                        laptop.putExtra("cateId", listCate.get(2).get_id());
                         startActivity(laptop);
                         break;
                     case 4:
@@ -295,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         getCartUser();
         notificationBadge = findViewById(R.id.menu_sl_home);
+        frameLayout = findViewById(R.id.frameGioHang);
     }
 
     @Override

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.interfaces.IImageClickListener;
-import com.example.technology_app.models.CartUserModel;
+import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.EventBus.CaculatorSumEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,8 +26,9 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
     Context context;
+    List<CartModel.Item> carts;
 
-    public CartAdapter(Context context, List<CartUserModel.Metadata.Cart.Item> carts) {
+    public CartAdapter(Context context, List<CartModel.Item> carts) {
         this.context = context;
         this.carts = carts;
     }
@@ -40,15 +41,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
         this.context = context;
     }
 
-    public List<CartUserModel.Metadata.Cart.Item> getCarts() {
+    public List<CartModel.Item> getCarts() {
         return carts;
     }
 
-    public void setCarts(List<CartUserModel.Metadata.Cart.Item> carts) {
+    public void setCarts(List<CartModel.Item> carts) {
         this.carts = carts;
     }
 
-    List<CartUserModel.Metadata.Cart.Item> carts;
     @NonNull
     @Override
     public CartAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,14 +59,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.MyViewHolder holder, int position) {
-        CartUserModel.Metadata.Cart.Item cart = carts.get(position);
-        holder.item_cart_productName.setText(cart.getProduct().name);
+        CartModel.Item cart = carts.get(position);
+        holder.item_cart_productName.setText(cart.getProduct().getName());
         holder.item_cart_quantity.setText(cart.getQuantity() + " ");
-        Glide.with(context).load(cart.getProduct().images.get(0)).into(holder.item_cart_image);
+        Glide.with(context).load(cart.getProduct().getImages().get(0)).into(holder.item_cart_image);
         //DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.item_cart_price.setText("Giá: "+ cart.getProduct().getSale_price());
-        int gia = cart.getQuantity() * Integer.parseInt(cart.getProduct().getSale_price());
-        holder.item_cart_price2.setText(gia);
+        int gia = cart.getQuantity() * Integer.parseInt(cart.getProduct().getSale_price().replaceAll("[^\\d]", ""));
+        holder.item_cart_price2.setText(String.valueOf(gia));
         holder.setiImageClickListener(new IImageClickListener() {
             @Override
             public void onImageClicked(View view, int pos, int value) {
@@ -104,8 +104,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
                     }
                 }
                 holder.item_cart_quantity.setText(carts.get(pos).getQuantity() + " ");
-                int gia = Integer.parseInt(carts.get(pos).getProduct().getSale_price()) * carts.get(pos).getQuantity();
-                holder.item_cart_price2.setText(gia+"đ");
+                int gia = Integer.parseInt(carts.get(pos).getProduct().getSale_price().replaceAll("[^\\d]", "")) * carts.get(pos).getQuantity();
+                holder.item_cart_price2.setText(String.valueOf(gia));
                 EventBus.getDefault().postSticky(new CaculatorSumEvent());
             }
         });

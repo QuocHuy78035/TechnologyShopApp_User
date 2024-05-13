@@ -2,9 +2,8 @@ package com.example.technology_app.retrofit;
 
 import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
-import com.example.technology_app.models.CartUserModel;
 import com.example.technology_app.models.CategoryModel;
-import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.Products.Laptop.ProductModel;
 import com.example.technology_app.models.SignUp;
 import com.example.technology_app.models.UserInfoModel;
 import com.example.technology_app.models.UserModel;
@@ -74,10 +73,10 @@ public interface Api {
     );
 
     @GET("product")
-    Observable<ProductModel> getLaptopProduct(@Query("category") String cateId);
+    Observable<ProductModel> getAllProductByCateId(@Query("category") String cateId);
 
-    @GET("product/{productId}")
-    Observable<ProductModel> getDetailProduct(@Path("productId") String productId);
+//    @GET("product/{productId}")
+//    Observable<DetailProductModel> getDetailProduct(@Path("productId") String productId);
 
     @POST("cart")
     @FormUrlEncoded
@@ -89,10 +88,7 @@ public interface Api {
     );
 
     @GET("cart")
-    Observable<CartUserModel> getCartUser(@Header("x-client-id") String userId,
-                                          @Header("authorization") String author);
+    Observable<CartModel> getCartUser(@Header("x-client-id") String userId,
+                                      @Header("authorization") String author);
 
-    @GET("cart")
-    Observable<CartModel> getAllCart(@Header("x-client-id") String userId,
-                                     @Header("authorization") String author);
 }

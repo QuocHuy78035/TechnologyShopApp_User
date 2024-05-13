@@ -109,15 +109,15 @@ public class AddToCartModel {
     }
 
     public static class Item{
-        public ProductModel.Product product;
+        public String product;
         public int quantity;
         public String _id;
 
-        public ProductModel.Product getProduct() {
+        public String getProduct() {
             return product;
         }
 
-        public void setProduct(ProductModel.Product product) {
+        public void setProduct(String product) {
             this.product = product;
         }
 
