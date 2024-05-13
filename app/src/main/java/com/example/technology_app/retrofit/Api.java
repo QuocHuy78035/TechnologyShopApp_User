@@ -2,6 +2,7 @@ package com.example.technology_app.retrofit;
 
 import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
+import com.example.technology_app.models.CartUserModel;
 import com.example.technology_app.models.CategoryModel;
 import com.example.technology_app.models.ProductModel;
 import com.example.technology_app.models.SignUp;
@@ -87,6 +88,9 @@ public interface Api {
             @Field("quantity") int quantity
     );
 
+    @GET("cart")
+    Observable<CartUserModel> getCartUser(@Header("x-client-id") String userId,
+                                          @Header("authorization") String author);
 
     @GET("cart")
     Observable<CartModel> getAllCart(@Header("x-client-id") String userId,

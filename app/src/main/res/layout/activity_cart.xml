@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.cart.CartActivity">
+    tools:context=".activities.carts.CartActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -75,5 +75,4 @@
         android:text="Buy"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btnBuy"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

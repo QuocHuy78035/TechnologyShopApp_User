@@ -44,6 +44,9 @@
             android:name=".activities.auth.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.cart.CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.auth.SplashActivity"
             android:exported="true">
             <intent-filter>
