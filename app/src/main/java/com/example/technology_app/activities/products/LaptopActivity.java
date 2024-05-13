@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technology_app.R;
 import com.example.technology_app.adapters.LaptopAdapter;
-import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.Products.Laptop.ProductDetail;
+import com.example.technology_app.models.Products.Laptop.ProductModel;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
@@ -38,7 +39,7 @@ public class LaptopActivity extends AppCompatActivity {
     Handler handler= new Handler();
     boolean isLoading = false;
     List<ProductModel> productModel;
-    List<ProductModel.Product> productList;
+    List<ProductDetail> productList;
     LaptopAdapter laptopAdapter;
     int page = 1;
     String cateId ;
@@ -113,28 +114,34 @@ public class LaptopActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        Log.d("cater123", cateId);
-        compositeDisposable.add(api.getLaptopProduct(cateId)
+        compositeDisposable.add(api.getAllProductByCateId(cateId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         productModel -> {
                             if (productModel.status == 200) {
-                                Log.d("Success", "getlaptop Success");
-                                Log.d("Success", "getlaptop Success" + productModel.getMetadata().getProduct().size());
-                                if(laptopAdapter == null){
-                                    productList = productModel.getMetadata().getProduct();
-                                    laptopAdapter = new LaptopAdapter(getApplicationContext(), productList);
-                                    recyclerView.setAdapter(laptopAdapter);
-                                }else{
-                                    int index = productList.size() - 1;
-                                    int indexAdd = productModel.getMetadata().getProduct().size();
-                                    for(int i = 0; i < indexAdd; i++){
-                                        productList.add(productModel.getMetadata().getProduct().get(i));
+                                List<ProductDetail> products = productModel.getMetadata().getProducts();
+                                if (products != null) {
+                                    if (laptopAdapter == null) {
+                                        productList = new ArrayList<>();
+                                        productList.addAll(products);
+                                        laptopAdapter = new LaptopAdapter(getApplicationContext(), productList);
+                                        recyclerView.setAdapter(laptopAdapter);
+                                    } else {
+                                        int index = productList.size() - 1;
+                                        int indexAdd = products.size();
+                                        for (int i = 0; i < indexAdd; i++) {
+                                            productList.add(products.get(i));
+                                        }
+                                        laptopAdapter.notifyItemRangeInserted(index, indexAdd);
                                     }
-                                    laptopAdapter.notifyItemRangeInserted(index, indexAdd);
+                                } else {
+                                    Log.e("getData", "Product list is null");
                                 }
                             }
+                        },
+                        throwable -> {
+                            Log.e("getData", "Error: " + throwable.getMessage());
                         }
                 )
         );

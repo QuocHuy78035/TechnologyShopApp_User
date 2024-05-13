@@ -1,5 +1,7 @@
 package com.example.technology_app.models;
 
+import com.example.technology_app.models.Products.Laptop.ProductDetail;
+
 import java.util.List;
 
 public class CartModel {
@@ -78,15 +80,15 @@ public class CartModel {
     }
 
     public static class Item {
-        private ProductModel product;
+        private ProductDetail product;
         private int quantity;
         private String _id;
 
-        public ProductModel getProduct() {
+        public ProductDetail getProduct() {
             return product;
         }
 
-        public void setProduct(ProductModel product) {
+        public void setProduct(ProductDetail  product) {
             this.product = product;
         }
 

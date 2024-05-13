@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technology_app.R;
-import com.example.technology_app.adapters.LaptopAdapter;
 import com.example.technology_app.adapters.RamAdapter;
-import com.example.technology_app.models.ProductModel;
+import com.example.technology_app.models.Products.Laptop.ProductDetail;
+import com.example.technology_app.models.Products.Laptop.ProductModel;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
@@ -39,7 +39,7 @@ public class RamActivity extends AppCompatActivity {
     Handler handler= new Handler();
     boolean isLoading = false;
     List<ProductModel> productModel;
-    List<ProductModel.Product> productList;
+    List<ProductDetail> productList;
     RamAdapter ramAdapter;
     int page = 1;
     String cateId ;
@@ -115,23 +115,22 @@ public class RamActivity extends AppCompatActivity {
 
     private void getData() {
         Log.d("cater123", cateId);
-        compositeDisposable.add(api.getLaptopProduct(cateId)
+        compositeDisposable.add(api.getAllProductByCateId("662a1b76f2eef23c711b2989")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         productModel -> {
                             if (productModel.status == 200) {
                                 Log.d("Success", "get ram Success");
-                                Log.d("Success", "getlaptop Success" + productModel.getMetadata().getProduct().size());
                                 if(ramAdapter == null){
-                                    productList = productModel.getMetadata().getProduct();
+                                    productList = productModel.getMetadata().getProducts();
                                     ramAdapter = new RamAdapter(getApplicationContext(), productList);
                                     recyclerView.setAdapter(ramAdapter);
                                 }else{
                                     int index = productList.size() - 1;
-                                    int indexAdd = productModel.getMetadata().getProduct().size();
+                                    int indexAdd = productModel.getMetadata().getProducts().size();
                                     for(int i = 0; i < indexAdd; i++){
-                                        productList.add(productModel.getMetadata().getProduct().get(i));
+                                        productList.add(productModel.getMetadata().getProducts().get(i));
                                     }
                                     ramAdapter.notifyItemRangeInserted(index, indexAdd);
                                 }
