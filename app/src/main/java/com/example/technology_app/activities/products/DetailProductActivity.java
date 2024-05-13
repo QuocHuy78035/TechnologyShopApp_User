@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,6 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
+import com.example.technology_app.activities.cart.CartActivity;
+import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.ProductModel;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
@@ -43,6 +46,9 @@ public class DetailProductActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     Api api;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
+    int quantity;
+
+    CartModel cartModelView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,8 @@ public class DetailProductActivity extends AppCompatActivity {
         txtProductName.setText(product.getName());
         txtProductDes.setText(product.getDescription());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        txtProductPrice.setText(decimalFormat.format(product.getPrice()) +"đ");
+        //txtProductPrice.setText(decimalFormat.format(product.getPrice()) +"đ");
+        txtProductPrice.setText((product.getPrice()));
         Glide.with(getApplicationContext()).load(product.getImages().get(0)).into(imgProduct);
         Integer[] so = new Integer[]{1,2,3,4,5,6,7,8,9,10};
         ArrayAdapter<Integer> adapterSpin = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, so);
@@ -70,6 +77,20 @@ public class DetailProductActivity extends AppCompatActivity {
     }
 
     private void initControl() {
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                quantity = Integer.parseInt(selectedItem);
+                Log.d("SelectedItem", selectedItem);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         btnWatchVid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,22 +107,19 @@ public class DetailProductActivity extends AppCompatActivity {
                 String accessToken = Paper.book().read("accessToken");
 
                 if(userId != null && accessToken != null){
-                    Log.d("Success", userId);
-                    Log.d("Success", accessToken);
-
-                    compositeDisposable.add(api.addToCart(userId, accessToken, product.get_id(), 1)
+                    compositeDisposable.add(api.addToCart(userId, accessToken, product.get_id(), quantity)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     cartModel -> {
                                         if (cartModel.getStatus() == 200) {
                                             Log.d("Success", "add to cart Success");
+                                            getCartUser();
                                         }else{
                                             Log.d("Fail", "add to cart Fail");
                                         }
                                     },
                                     throwable -> {
-                                        Log.d( "Log","123"+ throwable.getMessage());
                                         Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                             )
@@ -109,8 +127,6 @@ public class DetailProductActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(), "Token or UserId is null", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
     }
@@ -127,6 +143,53 @@ public class DetailProductActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_detailProduct);
         btnWatchVid = findViewById(R.id.btnWatchVid);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
+        getCartUser();
+
+
+//        frameLayout = findViewById(R.id.frameGioHang);
+//        frameLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent cart = new Intent(getApplicationContext(), CartActivity.class);
+//                startActivity(cart);
+//            }
+//        });
+
+//        if(Utils.mangGioHang != null){
+//            int totalItem = 0;
+//            for(int i =0; i < Utils.mangGioHang.size(); i++){
+//                totalItem += Utils.mangGioHang.get(i).getSoluongl();
+//            }
+//            notificationBadge.setText(String.valueOf(totalItem));
+//        }
+    }
+
+    void getCartUser(){
+        String userId = Paper.book().read("userId");
+        String accessToken = Paper.book().read("accessToken");
+        compositeDisposable.add(api.getAllCart(userId, accessToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        cartModel -> {
+                            if (cartModel.getStatus() == 200) {
+                                cartModelView = cartModel;
+                                Log.d("Size1" , "" + cartModelView.getMetadata().getCart().getItems().size());
+                                Log.d("Success", "get cart Success");
+
+                                if(cartModelView != null){
+                                    Log.d("Size2", "" + cartModelView.getMetadata().getCart().getItems().size());
+                                    notificationBadge.setText(String.valueOf(cartModelView.getMetadata().getCart().getItems().size()));
+                                }
+                            }else{
+                                Log.d("Fail", "get cart Fail");
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
     }
 
     @Override

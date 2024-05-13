@@ -1,5 +1,6 @@
 package com.example.technology_app.retrofit;
 
+import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CartUserModel;
 import com.example.technology_app.models.CategoryModel;
@@ -7,16 +8,12 @@ import com.example.technology_app.models.ProductModel;
 import com.example.technology_app.models.SignUp;
 import com.example.technology_app.models.UserInfoModel;
 import com.example.technology_app.models.UserModel;
-import com.google.firebase.auth.UserInfo;
 
-import io.paperdb.Paper;
 import io.reactivex.rxjava3.core.Observable;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -84,7 +81,7 @@ public interface Api {
 
     @POST("cart")
     @FormUrlEncoded
-    Observable<CartModel> addToCart(
+    Observable<AddToCartModel> addToCart(
             @Header("x-client-id") String userId,
             @Header("authorization") String author,
             @Field("product") String productId,
@@ -94,4 +91,8 @@ public interface Api {
     @GET("cart")
     Observable<CartUserModel> getCartUser(@Header("x-client-id") String userId,
                                           @Header("authorization") String author);
+
+    @GET("cart")
+    Observable<CartModel> getAllCart(@Header("x-client-id") String userId,
+                                     @Header("authorization") String author);
 }

@@ -78,15 +78,15 @@ public class CartUserModel {
             }
 
             public static class Item{
-                public DetailProductModel.Product product;
+                public DetailProductModel.ProductDetail product;
                 public int quantity;
                 public String _id;
 
-                public DetailProductModel.Product getProduct() {
+                public DetailProductModel.ProductDetail getProduct() {
                     return product;
                 }
 
-                public void setProduct(DetailProductModel.Product product) {
+                public void setProduct(DetailProductModel.ProductDetail product) {
                     this.product = product;
                 }
 

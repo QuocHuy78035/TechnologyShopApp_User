@@ -48,18 +48,18 @@ public class DetailProductModel{
     }
 
     public static class Metadata{
-        public Product getProduct() {
+        public ProductDetail getProduct() {
             return product;
         }
 
-        public void setProduct(Product product) {
+        public void setProduct(ProductDetail product) {
             this.product = product;
         }
 
-        public Product product;
+        public ProductDetail product;
     }
 
-    public static class Product{
+    public static class ProductDetail{
         public String _id;
         public String name;
         public ArrayList<String> images;
@@ -196,7 +196,7 @@ public class DetailProductModel{
             this.variants = variants;
         }
 
-        public Product(String _id, String name, ArrayList<String> images, String linkytb, String sale_price, ArrayList<String> extraInfo, String type, Description description, String category, int sold, int left, int views, int rating, String thumb, ArrayList<String> variants) {
+        public ProductDetail(String _id, String name, ArrayList<String> images, String linkytb, String sale_price, ArrayList<String> extraInfo, String type, Description description, String category, int sold, int left, int views, int rating, String thumb, ArrayList<String> variants) {
             this._id = _id;
             this.name = name;
             this.images = images;
