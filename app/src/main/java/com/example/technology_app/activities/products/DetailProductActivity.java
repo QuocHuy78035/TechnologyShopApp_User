@@ -94,7 +94,7 @@ public class DetailProductActivity extends AppCompatActivity {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     cartModel -> {
-                                        if (cartModel.status == 200) {
+                                        if (cartModel.getStatus() == 200) {
                                             Log.d("Success", "add to cart Success");
                                         }else{
                                             Log.d("Fail", "add to cart Fail");
