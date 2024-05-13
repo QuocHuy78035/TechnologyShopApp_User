@@ -1,11 +1,10 @@
 package com.example.technology_app.models;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class CartModel {
-    private String message;
-    private int status;
-    private Metadata metadata;
+public class AddToCartModel {
+    public String message;
+    public int status;
 
     public String getMessage() {
         return message;
@@ -31,12 +30,16 @@ public class CartModel {
         this.metadata = metadata;
     }
 
-    public static class Metadata {
-        private Cart cart;
+    public AddToCartModel(String message, int status, Metadata metadata) {
+        this.message = message;
+        this.status = status;
+        this.metadata = metadata;
+    }
 
-        public Metadata(Cart cart) {
-            this.cart = cart;
-        }
+    public Metadata metadata;
+
+    public static class Metadata{
+        public Cart cart;
 
         public Cart getCart() {
             return cart;
@@ -47,10 +50,9 @@ public class CartModel {
         }
     }
 
-    public static class Cart {
-        private String _id;
-        private String user;
-        private List<Item> items;
+    public static class Cart{
+        public String _id;
+        public String user;
 
         public String get_id() {
             return _id;
@@ -68,25 +70,54 @@ public class CartModel {
             this.user = user;
         }
 
-        public List<Item> getItems() {
+        public int get__v() {
+            return __v;
+        }
+
+        public void set__v(int __v) {
+            this.__v = __v;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public ArrayList<Item> getItems() {
             return items;
         }
 
-        public void setItems(List<Item> items) {
+        public void setItems(ArrayList<Item> items) {
             this.items = items;
         }
+
+        public String getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public int __v;
+        public String createdAt;
+        public ArrayList<Item> items;
+        public String updatedAt;
     }
 
-    public static class Item {
-        private ProductModel product;
-        private int quantity;
-        private String _id;
+    public static class Item{
+        public String product;
+        public int quantity;
+        public String _id;
 
-        public ProductModel getProduct() {
+        public String getProduct() {
             return product;
         }
 
-        public void setProduct(ProductModel product) {
+        public void setProduct(String product) {
             this.product = product;
         }
 

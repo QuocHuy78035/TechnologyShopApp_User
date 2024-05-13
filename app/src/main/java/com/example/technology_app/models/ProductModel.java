@@ -58,21 +58,20 @@ public class ProductModel {
     public static class Product implements Serializable {
         public String _id;
         public String name;
+        public String brand;
         public ArrayList<String> images;
-        public int price;
+        public String linkYtb;
+        public String price;
+        public String type;
         public String description;
         public String category;
         public int sold;
-
-        public Product(String _id, String name, ArrayList<String> images, int price, String description, String category, int sold, String createdAt, String updatedAt, int __v) {
-            this._id = _id;
-            this.name = name;
-            this.images = images;
-            this.price = price;
-            this.description = description;
-            this.category = category;
-            this.sold = sold;
-        }
+        public int views;
+        public int rating;
+        public String thumb;
+        public ArrayList<Object> extraInfo;
+        public ArrayList<Object> variants;
+        public int left;
 
         public String get_id() {
             return _id;
@@ -90,6 +89,14 @@ public class ProductModel {
             this.name = name;
         }
 
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
+        }
+
         public ArrayList<String> getImages() {
             return images;
         }
@@ -98,12 +105,28 @@ public class ProductModel {
             this.images = images;
         }
 
-        public int getPrice() {
+        public Object getLinkYtb() {
+            return linkYtb;
+        }
+
+        public void setLinkYtb(String linkYtb) {
+            this.linkYtb = linkYtb;
+        }
+
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(String price) {
             this.price = price;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
         }
 
         public String getDescription() {
@@ -128,6 +151,73 @@ public class ProductModel {
 
         public void setSold(int sold) {
             this.sold = sold;
+        }
+
+        public int getViews() {
+            return views;
+        }
+
+        public void setViews(int views) {
+            this.views = views;
+        }
+
+        public int getRating() {
+            return rating;
+        }
+
+        public void setRating(int rating) {
+            this.rating = rating;
+        }
+
+        public String getThumb() {
+            return thumb;
+        }
+
+        public void setThumb(String thumb) {
+            this.thumb = thumb;
+        }
+
+        public ArrayList<Object> getExtraInfo() {
+            return extraInfo;
+        }
+
+        public void setExtraInfo(ArrayList<Object> extraInfo) {
+            this.extraInfo = extraInfo;
+        }
+
+        public ArrayList<Object> getVariants() {
+            return variants;
+        }
+
+        public void setVariants(ArrayList<Object> variants) {
+            this.variants = variants;
+        }
+
+        public int getLeft() {
+            return left;
+        }
+
+        public void setLeft(int left) {
+            this.left = left;
+        }
+
+        public Product(String _id, String name, String brand, ArrayList<String> images, String linkYtb, String price, String type, String description, String category, int sold, int views, int rating, String thumb, ArrayList<Object> extraInfo, ArrayList<Object> variants, int left) {
+            this._id = _id;
+            this.name = name;
+            this.brand = brand;
+            this.images = images;
+            this.linkYtb = linkYtb;
+            this.price = price;
+            this.type = type;
+            this.description = description;
+            this.category = category;
+            this.sold = sold;
+            this.views = views;
+            this.rating = rating;
+            this.thumb = thumb;
+            this.extraInfo = extraInfo;
+            this.variants = variants;
+            this.left = left;
         }
     }
 }

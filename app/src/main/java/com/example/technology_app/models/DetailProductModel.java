@@ -48,18 +48,18 @@ public class DetailProductModel{
     }
 
     public static class Metadata{
-        public Product getProduct() {
+        public ProductDetail getProduct() {
             return product;
         }
 
-        public void setProduct(Product product) {
+        public void setProduct(ProductDetail product) {
             this.product = product;
         }
 
-        public Product product;
+        public ProductDetail product;
     }
 
-    public static class Product{
+    public static class ProductDetail{
         public String _id;
         public String name;
 
