@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +20,19 @@ import com.example.technology_app.R;
 import com.example.technology_app.interfaces.IImageClickListener;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.EventBus.CaculatorSumEvent;
+import com.example.technology_app.retrofit.Api;
+import com.example.technology_app.retrofit.RetrofitClient;
+import com.example.technology_app.utils.GlobalVariable;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Objects;
+
+import io.paperdb.Paper;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
     Context context;
@@ -70,10 +80,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
         holder.setiImageClickListener(new IImageClickListener() {
             @Override
             public void onImageClicked(View view, int pos, int value) {
+                String userId = Paper.book().read("userId");
+                String accessToken = Paper.book().read("accessToken");
                 Log.d("TAG", "onImageClick" + pos + "..." + value);
                 if(value == 1){
                     if(carts.get(pos).getQuantity() > 1){
                         int newQuantity = carts.get(pos).getQuantity() - 1;
+                        updateCartQuantity(userId, accessToken, carts.get(pos).getProduct().get_id(), newQuantity);
                         carts.get(pos).setQuantity(newQuantity);
                     }else if(carts.get(pos).getQuantity() == 1){
                         AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
@@ -100,6 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
                 }else if(value == 2){
                     if(carts.get(pos).getQuantity() < 11){
                         int newQuantity = carts.get(pos).getQuantity() + 1;
+                        updateCartQuantity(userId, accessToken, carts.get(pos).getProduct().get_id(), newQuantity);
                         carts.get(pos).setQuantity(newQuantity);
                     }
                 }
@@ -109,6 +123,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
                 EventBus.getDefault().postSticky(new CaculatorSumEvent());
             }
         });
+    }
+
+    private void updateCartQuantity(String userId, String accessToken, String productId, int quantity){
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        Api api;
+        api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
+        compositeDisposable.add(api.updateCartQuantity(userId, accessToken, productId, quantity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        updateCartModel -> {
+                            if (updateCartModel.getStatus() == 200) {
+                                Log.d("TAG", "Cart updated successfully");
+                            } else {
+                                Log.d("Fail", "update cart Fail");
+                            }
+                        },
+                        throwable -> {
+                            Log.d("Fail", Objects.requireNonNull(throwable.getMessage()));
+                        }
+                )
+        );
     }
 
     @Override

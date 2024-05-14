@@ -1,5 +1,6 @@
 package com.example.technology_app.activities.cart;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +56,7 @@ public class CartActivity extends AppCompatActivity {
         //calculatorSumPrice();
     }
 
+    @SuppressLint("SetTextI18n")
     private void calculatorSumPrice() {
         totalPriceProduct = 0;
         for(int i = 0; i < cartList.size(); i++){

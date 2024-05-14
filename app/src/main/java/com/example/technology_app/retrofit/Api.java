@@ -3,8 +3,10 @@ package com.example.technology_app.retrofit;
 import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
+import com.example.technology_app.models.Order.OrderModel;
 import com.example.technology_app.models.Products.Laptop.ProductModel;
 import com.example.technology_app.models.SignUp;
+import com.example.technology_app.models.UpdateCart.UpdateCartModel;
 import com.example.technology_app.models.UserInfoModel;
 import com.example.technology_app.models.UserModel;
 
@@ -79,9 +81,6 @@ public interface Api {
     @GET("product")
     Observable<ProductModel> getAllProductByCateId(@Query("category") String cateId);
 
-//    @GET("product/{productId}")
-//    Observable<DetailProductModel> getDetailProduct(@Path("productId") String productId);
-
     @POST("cart")
     @FormUrlEncoded
     Observable<AddToCartModel> addToCart(
@@ -108,4 +107,21 @@ public interface Api {
             @Part("address") RequestBody address,
             @Part("mobile") RequestBody mobile
     );
+
+    @POST("cart")
+    @FormUrlEncoded
+    Observable<OrderModel> createOrder(
+            @Header("x-client-id") String userId,
+            @Header("authorization") String author
+    );
+
+    @PATCH("cart/quantity")
+    @FormUrlEncoded
+    Observable<UpdateCartModel> updateCartQuantity(
+            @Header("x-client-id") String userId,
+            @Header("authorization") String author,
+            @Field("product") String productId,
+            @Field("quantity") int quantity
+    );
+
 }
