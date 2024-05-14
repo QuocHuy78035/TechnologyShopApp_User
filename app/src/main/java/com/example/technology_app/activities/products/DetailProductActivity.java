@@ -22,13 +22,18 @@ import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
 import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.models.CartModel;
+import com.example.technology_app.models.NotiSendData;
 import com.example.technology_app.models.Products.Laptop.ProductDetail;
 import com.example.technology_app.retrofit.Api;
+import com.example.technology_app.retrofit.ApiPushNotification;
 import com.example.technology_app.retrofit.RetrofitClient;
+import com.example.technology_app.retrofit.RetrofitClientPushNoti;
 import com.example.technology_app.utils.GlobalVariable;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -116,6 +121,7 @@ public class DetailProductActivity extends AppCompatActivity {
                             .subscribe(
                                     cartModel -> {
                                         if (cartModel.getStatus() == 200) {
+                                            pushNotification();
                                             Log.d("Success", "add to cart Success");
                                             getCartUser();
                                         }else{
@@ -191,6 +197,28 @@ public class DetailProductActivity extends AppCompatActivity {
                         },
                         throwable -> {
 
+                            Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
+    }
+
+    private void pushNotification(){
+        String token = "cT08FWn7REavpLCXzgsl1c:APA91bGmyvSkQszBnczPNDehYviMGL-bMnOEi4EyEMuBqDlpyv6D0qMouXbXG-DVIeR_TjBe85Ml4Qe1_IVbTa0amE0Kd7FDjmCZEvfs24f85-gP7QbzH7_vViXW85mLnMlrf1nomUn-";
+        Map<String, String> data = new HashMap<>();
+        data.put("title", "Notification");
+        data.put("body", "Add product to cart success!");
+        NotiSendData notiSendData = new NotiSendData(token, data);
+        ApiPushNotification apiPushNotification = RetrofitClientPushNoti.getInstance().create(ApiPushNotification.class);
+        compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        notiResponse -> {
+
+                        },
+                        throwable -> {
+                            Log.d( "Log","123"+ throwable.getMessage());
                             Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 )

@@ -23,7 +23,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
         showNotification(Objects.requireNonNull(message.getNotification()).getTitle(), message.getNotification().getBody());
-
     }
 
     private void showNotification(String title, String body) {

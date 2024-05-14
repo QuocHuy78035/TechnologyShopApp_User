@@ -28,6 +28,7 @@ import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.activities.chat.ChatActivity;
 import com.example.technology_app.activities.products.LaptopActivity;
 import com.example.technology_app.activities.products.RamActivity;
+import com.example.technology_app.activities.profile.ProfileActivity;
 import com.example.technology_app.adapters.CategoryAdapter;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
@@ -67,12 +68,13 @@ public class MainActivity extends AppCompatActivity {
     //CartModel cartModelView;
     CartModel cartModelView;
     FrameLayout frameLayout;
-
+    String userId, accessToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         initView();
         getToken();
         initControl();
@@ -91,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent cart = new Intent(getApplicationContext(), CartActivity.class);
                 startActivity(cart);
+            }
+        });
+
+        imgAvt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -302,6 +312,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         Paper.init(this);
+        userId = Paper.book().read("userId");
+        accessToken= Paper.book().read("accessToken");
         imgAvt = findViewById(R.id.imgAvtProfile);
         viewFlipper = findViewById(R.id.viewflipperHomeScreen);
         toolbar = findViewById(R.id.toolbarHomeScreen);
