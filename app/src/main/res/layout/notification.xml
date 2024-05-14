@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_noti"
         android:id="@+id/imgNoti"/>
 
@@ -22,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:gravity="center"
-            android:text="Thong bao"
+            android:gravity="start"
+            android:text="Notificaton"
             android:id="@+id/title_noti"/>
         <TextView
             android:layout_width="match_parent"
