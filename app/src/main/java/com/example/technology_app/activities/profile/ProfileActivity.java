@@ -177,6 +177,8 @@ public class ProfileActivity extends AppCompatActivity {
                     if (userModel.getStatus() == 200) {
                         Glide.with(ProfileActivity.this).load(userModel.getMetadata().getUser().getAvatar()).into(imgAvt);
                         Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                         finish();
                     } else {
                         Toast.makeText(ProfileActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
