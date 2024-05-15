@@ -4,16 +4,20 @@ import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
 import com.example.technology_app.models.Order.OrderModel;
+import com.example.technology_app.models.Order.ProductOrder.ProductOrder;
 import com.example.technology_app.models.Products.Laptop.ProductModel;
 import com.example.technology_app.models.SignUp;
 import com.example.technology_app.models.UpdateCart.UpdateCartModel;
 import com.example.technology_app.models.UserInfoModel;
 import com.example.technology_app.models.UserModel;
 
+import java.util.Map;
+
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -108,11 +112,28 @@ public interface Api {
             @Part("mobile") RequestBody mobile
     );
 
-    @POST("cart")
-    @FormUrlEncoded
+//    @POST("order")
+//    @FormUrlEncoded
+//    Observable<OrderModel> createOrder(
+//            @Header("x-client-id") String userId,
+//            @Header("authorization") String author,
+//            @Field("totalPrice") int totalPrice,
+//            @Field("totalApplyDiscount") int totalApplyDiscount,
+//            @Field("feeShip") int feeShip,
+//            @Field("total") int total,
+//            @Field("shipping_address") String shipping_address,
+//            @Field("method") String method,
+//            @Field("coin") int coin,
+//            @Field("voucher") String voucher,
+//            @Field("products") String products,
+//            @Field("phone") String phone
+//    );
+
+    @POST("order")
     Observable<OrderModel> createOrder(
             @Header("x-client-id") String userId,
-            @Header("authorization") String author
+            @Header("authorization") String author,
+            @Body Map<String, Object> requestBody
     );
 
     @PATCH("cart/quantity")
@@ -124,4 +145,11 @@ public interface Api {
             @Field("quantity") int quantity
     );
 
+    @PATCH("cart/item")
+    @FormUrlEncoded
+    Observable<UpdateCartModel> removeItemInCart(
+            @Header("x-client-id") String userId,
+            @Header("authorization") String author,
+            @Field("product") String productId
+    );
 }

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //Utils.mangGioHang.remove(pos);
+                                deleteItemFromCart(userId, accessToken, carts.get(pos).getProduct().get_id(), pos);
                                 notifyDataSetChanged();
                                 EventBus.getDefault().postSticky(new CaculatorSumEvent());
                             }
@@ -123,6 +126,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
                 EventBus.getDefault().postSticky(new CaculatorSumEvent());
             }
         });
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    GlobalVariable.listCartBuy.add(cart);
+                    EventBus.getDefault().postSticky(new CaculatorSumEvent());
+                }else{
+                    for(int i = 0; i < GlobalVariable.listCartBuy.size(); i++){
+                        if(Objects.equals(GlobalVariable.listCartBuy.get(i).getProduct().get_id(), cart.getProduct().get_id())){
+                            GlobalVariable.listCartBuy.remove(i);
+                            EventBus.getDefault().postSticky(new CaculatorSumEvent());
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void updateCartQuantity(String userId, String accessToken, String productId, int quantity){
@@ -147,6 +166,31 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
         );
     }
 
+    private void deleteItemFromCart(String userId, String accessToken, String productId, int position){
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        Api api;
+        api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
+        compositeDisposable.add(api.removeItemInCart(userId, accessToken, productId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        updateCartModel -> {
+                            if (updateCartModel.getStatus() == 200) {
+                                Log.d("TAG", "Item deleted successfully");
+                                carts.remove(position); // Remove item from the list
+                                notifyItemRemoved(position); // Notify RecyclerView of item removal
+                                EventBus.getDefault().postSticky(new CaculatorSumEvent()); // Update sum event
+                            } else {
+                                Log.d("Fail", "item delete Fail");
+                            }
+                        },
+                        throwable -> {
+                            Log.d("Fail", Objects.requireNonNull(throwable.getMessage()));
+                        }
+                )
+        );
+    }
+
     @Override
     public int getItemCount() {
         return carts.size();
@@ -161,6 +205,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
 
         ImageView item_cart_image, item_cart_remove, item_cart_add;
         TextView item_cart_productName, item_cart_price, item_cart_quantity, item_cart_price2;
+        CheckBox checkBox;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             item_cart_image = itemView.findViewById(R.id.item_cart_image);
@@ -170,6 +215,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
             item_cart_quantity = itemView.findViewById(R.id.item_cart_quantity);
             item_cart_remove = itemView.findViewById(R.id.item_cart_remove);
             item_cart_add = itemView.findViewById(R.id.item_cart_add);
+            checkBox = itemView.findViewById(R.id.item_cart_check);
 
             //event click
             item_cart_remove.setOnClickListener(this);

@@ -87,9 +87,14 @@
                     android:text="25000"
                     android:gravity="left"
                     android:textStyle="bold" />
-
-
             </LinearLayout>
+            
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_cart_check"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
 
