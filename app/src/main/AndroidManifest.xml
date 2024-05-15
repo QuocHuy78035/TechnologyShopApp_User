@@ -37,7 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.payment.PaymentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activities.products.VidDemoProductActivity"
             android:exported="false" />

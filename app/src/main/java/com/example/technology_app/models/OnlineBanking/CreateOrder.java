@@ -1,4 +1,4 @@
-package com.example.technology_app.models;
+package com.example.technology_app.models.OnlineBanking;
 
 import com.example.technology_app.utils.AppInfo;
 import com.example.technology_app.zalo_pay.Helper.Helpers;
