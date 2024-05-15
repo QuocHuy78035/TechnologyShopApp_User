@@ -23,6 +23,9 @@ import com.example.technology_app.models.EventBus.CaculatorSumEvent;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.RetrofitClient;
 import com.example.technology_app.utils.GlobalVariable;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
@@ -53,15 +56,15 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         initView();
         initControl();
-        //calculatorSumPrice();
     }
 
     @SuppressLint("SetTextI18n")
     private void calculatorSumPrice() {
         totalPriceProduct = 0;
-        for(int i = 0; i < cartList.size(); i++){
-            String value = cartList.get(i).getProduct().getSale_price().replaceAll("[^\\d]", "");
-            totalPriceProduct += Integer.parseInt(value) * cartList.get(i).getQuantity();
+        Log.d("CheckSize", "" + GlobalVariable.listCartBuy.size());
+        for(int i = 0; i < GlobalVariable.listCartBuy.size(); i++){
+            String value = GlobalVariable.listCartBuy.get(i).getProduct().getSale_price().replaceAll("[^\\d]", "");
+            totalPriceProduct += Integer.parseInt(value) * GlobalVariable.listCartBuy.get(i).getQuantity();
         }
         //DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         totalPrice.setText(totalPriceProduct +"đ");
@@ -109,6 +112,7 @@ public class CartActivity extends AppCompatActivity {
         btnBuy = findViewById(R.id.btnBuy);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
         getCartUser();
+        calculatorSumPrice();
     }
 
     private void initControl() {
@@ -141,24 +145,24 @@ public class CartActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        EventBus.getDefault().unregister(this);
-//        super.onStop();
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
-//    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-//    public  void eventTinhTien(CaculatorSumEvent event){
-//        if(event != null){
-//            calculatorSumPrice();
-//        }
-//    }
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public  void eventTinhTien(CaculatorSumEvent event){
+        if(event != null){
+            calculatorSumPrice();
+        }
+    }
 
     @Override
     protected void onDestroy() {

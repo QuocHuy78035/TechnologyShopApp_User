@@ -5,7 +5,7 @@ public class Checkout {
     private int totalApplyDiscount;
     private int feeShip;
     private int total;
-    private String _id;
+    //private String _id;
 
     public int getTotalPrice() {
         return totalPrice;
@@ -39,19 +39,19 @@ public class Checkout {
         this.total = total;
     }
 
-    public String get_id() {
-        return _id;
-    }
+//    public String get_id() {
+//        return _id;
+//    }
+//
+//    public void set_id(String _id) {
+//        this._id = _id;
+//    }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public Checkout(int totalPrice, int totalApplyDiscount, int feeShip, int total, String _id) {
+    public Checkout(int totalPrice, int totalApplyDiscount, int feeShip, int total) {
         this.totalPrice = totalPrice;
         this.totalApplyDiscount = totalApplyDiscount;
         this.feeShip = feeShip;
         this.total = total;
-        this._id = _id;
+        //this._id = _id;
     }
 }

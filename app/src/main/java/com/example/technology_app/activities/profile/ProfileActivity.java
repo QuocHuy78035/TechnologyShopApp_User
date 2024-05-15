@@ -1,7 +1,7 @@
 package com.example.technology_app.activities.profile;
 
-import static com.example.technology_app.utils.GlobalVariable.storage_permissions;
 import static com.example.technology_app.utils.GlobalVariable.storage_permissions_33;
+import static com.example.technology_app.utils.GlobalVariable.storage_permissons;
 
 import android.Manifest;
 import android.app.Activity;
@@ -225,7 +225,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             p = storage_permissions_33;
         }else{
-            p = storage_permissions;
+            p = storage_permissons;
         }
         return p;
     }

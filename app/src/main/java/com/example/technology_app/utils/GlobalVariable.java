@@ -5,8 +5,13 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.technology_app.models.CartModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class GlobalVariable {
-    public static String BASE_URL = "http://192.168.1.6:8000/api/v1/";
+    public static String BASE_URL = "http://192.168.108.24:8000/api/v1/";
     public static final String SEND_ID = "idsend";
     public  static final String ID_RECEIVED = "660278540a0d57489cda9b47";
     public static final String RECEIVED_ID = "idreceived";
@@ -14,7 +19,7 @@ public class GlobalVariable {
     public static final String DATE_TIME = "datetime";
     public static final String CHAT_PATH = "message";
 
-    public static String[] storage_permissions = {
+    public static String[] storage_permissons = {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
     };
@@ -25,4 +30,6 @@ public class GlobalVariable {
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,
     };
+
+    public static List<CartModel.Item> listCartBuy = new ArrayList<>();
 }
