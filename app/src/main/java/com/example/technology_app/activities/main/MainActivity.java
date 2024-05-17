@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
+import com.example.technology_app.activities.Order.OrderActivity;
 import com.example.technology_app.activities.auth.LoginActivity;
 import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.activities.chat.ChatActivity;
@@ -32,6 +33,7 @@ import com.example.technology_app.activities.profile.ProfileActivity;
 import com.example.technology_app.adapters.CategoryAdapter;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
+import com.example.technology_app.models.GetOrder.Order;
 import com.example.technology_app.models.NotiSendData;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.ApiPushNotification;
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                     listCate = categoryModel.getMetadata().getCategories();
                                     listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+                                    listCate.add(new CategoryModel.Category("123", "Order", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
 
@@ -265,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
                     case 5:
                         Intent chat = new Intent(getApplicationContext(), ChatActivity.class);
                         startActivity(chat);
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        break;
+                    case 6:
+                        Intent order = new Intent(getApplicationContext(), OrderActivity.class);
+                        startActivity(order);
                         FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
