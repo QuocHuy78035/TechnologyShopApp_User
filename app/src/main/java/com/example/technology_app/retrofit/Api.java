@@ -3,6 +3,7 @@ package com.example.technology_app.retrofit;
 import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
+import com.example.technology_app.models.GetOrder.GetOrderModel;
 import com.example.technology_app.models.Order.OrderModel;
 import com.example.technology_app.models.Order.ProductOrder.ProductOrder;
 import com.example.technology_app.models.Products.Laptop.ProductModel;
@@ -85,6 +86,11 @@ public interface Api {
     @GET("product")
     Observable<ProductModel> getAllProductByCateId(@Query("category") String cateId);
 
+    @GET("order/user")
+    Observable<GetOrderModel> getOrderUser(@Query("status") String status,
+                                           @Header("x-client-id") String userId,
+                                           @Header("authorization") String author);
+
     @POST("cart")
     @FormUrlEncoded
     Observable<AddToCartModel> addToCart(
@@ -111,24 +117,6 @@ public interface Api {
             @Part("address") RequestBody address,
             @Part("mobile") RequestBody mobile
     );
-
-//    @POST("order")
-//    @FormUrlEncoded
-//    Observable<OrderModel> createOrder(
-//            @Header("x-client-id") String userId,
-//            @Header("authorization") String author,
-//            @Field("totalPrice") int totalPrice,
-//            @Field("totalApplyDiscount") int totalApplyDiscount,
-//            @Field("feeShip") int feeShip,
-//            @Field("total") int total,
-//            @Field("shipping_address") String shipping_address,
-//            @Field("method") String method,
-//            @Field("coin") int coin,
-//            @Field("voucher") String voucher,
-//            @Field("products") String products,
-//            @Field("phone") String phone
-//    );
-
     @POST("order")
     Observable<OrderModel> createOrder(
             @Header("x-client-id") String userId,
