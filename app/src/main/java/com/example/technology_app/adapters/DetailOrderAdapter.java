@@ -49,8 +49,8 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
         Products product = productsList.get(position);
         holder.txtProductQuantity.setText("Quantity: "+String.valueOf(product.getQuantity()) + "item.");
         holder.txtProductName.setText(product.getProduct().getName());
-        holder.txtProductStatusPayment.setText("Status: " + order.getPaymentStatus());
-        //holder.txtDeliveredDate.setText("Delivered Date: " + order.getDeliveredDate());
+        holder.txtProductStatusPayment.setText("Payment Status: " + order.getPaymentStatus());
+        holder.txtOrderStatus.setText("Order Status: " + order.getStatus());
         Glide.with(context).load(product.getProduct().getImages().get(0)).into(holder.img);
     }
 
@@ -61,7 +61,7 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView txtProductName, txtProductQuantity, txtProductStatusPayment, txtDeliveredDate;
+        TextView txtProductName, txtProductQuantity, txtProductStatusPayment, txtOrderStatus;
 
         public ImageView getImg() {
             return img;
@@ -93,7 +93,7 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
             txtProductName = itemView.findViewById(R.id.idItemOrderName);
             txtProductQuantity = itemView.findViewById(R.id.idItemOrderQuantity);
             txtProductStatusPayment = itemView.findViewById(R.id.idItemOrderStatusPayment);
-            //txtDeliveredDate = itemView.findViewById(R.id.idItemOrderDeliveredDay);
+            txtOrderStatus = itemView.findViewById(R.id.idItemOrderStatus);
         }
     }
 }

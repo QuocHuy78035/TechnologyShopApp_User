@@ -1,4 +1,4 @@
-package com.example.technology_app.activities.Order;
+package com.example.technology_app.activities.order;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +60,7 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void getOrder(String userId, String accessToken, String status) {
-        compositeDisposable.add(api.getOrderUser(status, userId, accessToken)
+        compositeDisposable.add(api.getOrderUser(userId, accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

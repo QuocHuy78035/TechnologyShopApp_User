@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalVariable {
-    public static String BASE_URL = "http://10.132.61.221:8000/api/v1/";
+    public static String BASE_URL = "http://192.168.1.6:8000/api/v1/";
     public static final String SEND_ID = "idsend";
     public  static final String ID_RECEIVED = "660278540a0d57489cda9b47";
     public static final String RECEIVED_ID = "idreceived";

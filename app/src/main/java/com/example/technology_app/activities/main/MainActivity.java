@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
-import com.example.technology_app.activities.Order.OrderActivity;
+import com.example.technology_app.activities.order.OrderActivity;
 import com.example.technology_app.activities.auth.LoginActivity;
 import com.example.technology_app.activities.cart.CartActivity;
 import com.example.technology_app.activities.chat.ChatActivity;
@@ -33,7 +33,6 @@ import com.example.technology_app.activities.profile.ProfileActivity;
 import com.example.technology_app.adapters.CategoryAdapter;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
-import com.example.technology_app.models.GetOrder.Order;
 import com.example.technology_app.models.NotiSendData;
 import com.example.technology_app.retrofit.Api;
 import com.example.technology_app.retrofit.ApiPushNotification;
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar();
         getCategory();
         getInfoUser();
-        //pushNotification();
+        pushNotification();
         getEventClick();
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
@@ -107,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pushNotification(){
-        String token = "cT08FWn7REavpLCXzgsl1c:APA91bGmyvSkQszBnczPNDehYviMGL-bMnOEi4EyEMuBqDlpyv6D0qMouXbXG-DVIeR_TjBe85Ml4Qe1_IVbTa0amE0Kd7FDjmCZEvfs24f85-gP7QbzH7_vViXW85mLnMlrf1nomUn-";
+        String tokenNew = Paper.book().read("firebaseToken");
+        //String token = "cT08FWn7REavpLCXzgsl1c:APA91bGmyvSkQszBnczPNDehYviMGL-bMnOEi4EyEMuBqDlpyv6D0qMouXbXG-DVIeR_TjBe85Ml4Qe1_IVbTa0amE0Kd7FDjmCZEvfs24f85-gP7QbzH7_vViXW85mLnMlrf1nomUn-";
+        String token = "cT08FWn7REavpLCXzgsl1c:APA91bHuPDnGKi6M3tPQAoG1sV6C1IAWGueF3bA4UuTC4Gv1Hy3h7tC4kdsCGqHxf5s7E_xsBDrtDIJ0rgCr5zAWJOTNENAlVq3tm0ji5_55JMm_VUkBRj5tWw_2_ya_qvmEOmdhOa6A";
         Map<String, String> data = new HashMap<>();
         data.put("title", "Notification");
         data.put("body", "you have placed your order.");
-        NotiSendData notiSendData = new NotiSendData(token, data);
+        NotiSendData notiSendData = new NotiSendData(tokenNew, data);
         ApiPushNotification apiPushNotification = RetrofitClientPushNoti.getInstance().create(ApiPushNotification.class);
         compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
                 .subscribeOn(Schedulers.io())
@@ -288,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s) {
                         if(!TextUtils.isEmpty(s)){
+                            Paper.book().write("firebaseToken", s);
                             String userId = Paper.book().read("userId");
                             if(userId != null){
                                 compositeDisposable.add(api.updateFirebaseToken(userId, s)
