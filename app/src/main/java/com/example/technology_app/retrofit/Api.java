@@ -87,7 +87,7 @@ public interface Api {
     Observable<ProductModel> getAllProductByCateId(@Query("category") String cateId);
 
     @GET("order/user")
-    Observable<GetOrderModel> getOrderUser(@Query("status") String status,
+    Observable<GetOrderModel> getOrderUser(
                                            @Header("x-client-id") String userId,
                                            @Header("authorization") String author);
 
