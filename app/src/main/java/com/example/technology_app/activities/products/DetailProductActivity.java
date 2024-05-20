@@ -71,8 +71,6 @@ public class DetailProductActivity extends AppCompatActivity {
     private void initData() {
         product = (ProductDetail) getIntent().getSerializableExtra("detailProduct");
         assert product != null;
-        Log.d("Test123123123", product.getName());
-        assert product != null;
         txtProductName.setText(product.getName());
         txtProductDes.setText(product.getInformation());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
