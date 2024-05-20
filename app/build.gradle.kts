@@ -88,4 +88,11 @@ dependencies {
     implementation("commons-codec:commons-codec:1.14")
 
 
+    //livestream
+    implementation("live.videosdk:rtc-android-sdk:0.1.21")
+    // library to perform Network call to generate a meeting id
+    implementation("com.amitshekhar.android:android-networking:1.0.2")
+    implementation("com.google.android.exoplayer:exoplayer:2.18.5")
+
+
 }

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.technology_app.R;
+import com.example.technology_app.activities.livestream.MeetingActivity;
 import com.example.technology_app.activities.order.OrderActivity;
 import com.example.technology_app.activities.auth.LoginActivity;
 import com.example.technology_app.activities.cart.CartActivity;
@@ -187,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
                                     listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
                                     listCate.add(new CategoryModel.Category("123", "Order", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+                                    listCate.add(new CategoryModel.Category("123", "LiveStream", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
 
@@ -276,6 +279,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent order = new Intent(getApplicationContext(), OrderActivity.class);
                         startActivity(order);
                         FirebaseAuth.getInstance().signOut();
+                        finish();
+                        break;
+                    case 8:
+                        Intent live = new Intent(getApplicationContext(), MeetingActivity.class);
+                        startActivity(live);
                         finish();
                         break;
                 }

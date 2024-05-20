@@ -3,6 +3,7 @@ package com.example.technology_app.retrofit;
 import com.example.technology_app.models.AddToCartModel;
 import com.example.technology_app.models.CartModel;
 import com.example.technology_app.models.CategoryModel;
+import com.example.technology_app.models.GetLive.GetLiveModel;
 import com.example.technology_app.models.GetOrder.GetOrderModel;
 import com.example.technology_app.models.Order.OrderModel;
 import com.example.technology_app.models.Order.ProductOrder.ProductOrder;
@@ -140,4 +141,9 @@ public interface Api {
             @Header("authorization") String author,
             @Field("product") String productId
     );
+
+
+    @GET("meeting")
+    Observable<GetLiveModel> getLive(@Header("x-client-id") String userId,
+                                     @Header("authorization") String author);
 }
