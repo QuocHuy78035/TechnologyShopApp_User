@@ -1,5 +1,6 @@
 package com.example.technology_app.activities.livestream;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.technology_app.R;
+import com.example.technology_app.activities.chat.ChatActivity;
+import com.example.technology_app.activities.main.MainActivity;
 import com.example.technology_app.adapters.CartAdapter;
 import com.example.technology_app.fragment.ViewerFragment;
 import com.example.technology_app.retrofit.Api;
@@ -96,6 +99,15 @@ public class MeetingActivity extends AppCompatActivity {
                 )
         );
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(MeetingActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish ChatActivity
+    }
+
     public Meeting getMeeting() {
         return meeting;
     }

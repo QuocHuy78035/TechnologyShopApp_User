@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar();
         getCategory();
         getInfoUser();
-        pushNotification();
+        //pushNotification();
         getEventClick();
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +185,11 @@ public class MainActivity extends AppCompatActivity {
                             if (categoryModel.getStatus() == 200) {
                                 if (categoryModel.getMetadata() != null) {
                                     listCate = categoryModel.getMetadata().getCategories();
-                                    listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
-                                    listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
-                                    listCate.add(new CategoryModel.Category("123", "Order", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
-                                    listCate.add(new CategoryModel.Category("123", "LiveStream", "", "", 0, "https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-Le-hoi-phu-kien-800-300.png"));
+                                    listCate.add(new CategoryModel.Category("123", "Chat", "", "", 0, "https://w7.pngwing.com/pngs/124/1014/png-transparent-chat-bubbles-to-chat-with-chat-bubbles-speak.png"));
+                                    listCate.add(new CategoryModel.Category("123", "Order", "", "", 0, "https://browntape.com/wp-content/uploads/2017/09/bb.png"));
+                                    listCate.add(new CategoryModel.Category("123", "LiveStream", "", "", 0, "https://e7.pngegg.com/pngimages/166/901/png-clipart-live-text-live-on-air-sign-miscellaneous-on-air-signs.png"));
+                                    listCate.add(new CategoryModel.Category("123", "Log out", "", "", 0, "https://cdn1.iconfinder.com/data/icons/materia-arrows-symbols-vol-3/24/018_128_arrow_exit_logout-1024.png"));
+
 
                                     categoryAdapter = new CategoryAdapter(listCate, getApplicationContext());
                                     listView.setAdapter(categoryAdapter);
@@ -263,12 +264,6 @@ public class MainActivity extends AppCompatActivity {
                         laptop.putExtra("cateId", listCate.get(2).get_id());
                         startActivity(laptop);
                         break;
-                    case 4:
-                        Intent signOut = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(signOut);
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        break;
                     case 5:
                         Intent chat = new Intent(getApplicationContext(), ChatActivity.class);
                         startActivity(chat);
@@ -281,9 +276,15 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
-                    case 8:
+                    case 7:
                         Intent live = new Intent(getApplicationContext(), MeetingActivity.class);
                         startActivity(live);
+                        finish();
+                        break;
+                    case 8:
+                        Intent signOut = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(signOut);
+                        FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
                 }

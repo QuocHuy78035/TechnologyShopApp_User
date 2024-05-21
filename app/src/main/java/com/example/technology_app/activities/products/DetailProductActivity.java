@@ -202,11 +202,13 @@ public class DetailProductActivity extends AppCompatActivity {
     }
 
     private void pushNotification(){
+        String tokenNew = Paper.book().read("firebaseToken");
+
         String token = "cT08FWn7REavpLCXzgsl1c:APA91bGmyvSkQszBnczPNDehYviMGL-bMnOEi4EyEMuBqDlpyv6D0qMouXbXG-DVIeR_TjBe85Ml4Qe1_IVbTa0amE0Kd7FDjmCZEvfs24f85-gP7QbzH7_vViXW85mLnMlrf1nomUn-";
         Map<String, String> data = new HashMap<>();
         data.put("title", "Notification");
         data.put("body", "Add product to cart success!");
-        NotiSendData notiSendData = new NotiSendData(token, data);
+        NotiSendData notiSendData = new NotiSendData(tokenNew, data);
         ApiPushNotification apiPushNotification = RetrofitClientPushNoti.getInstance().create(ApiPushNotification.class);
         compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
                 .subscribeOn(Schedulers.io())

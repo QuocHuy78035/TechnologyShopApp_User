@@ -1,6 +1,7 @@
 package com.example.technology_app.activities.chat;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technology_app.R;
+import com.example.technology_app.activities.main.MainActivity;
 import com.example.technology_app.adapters.ChatAdapter;
 import com.example.technology_app.models.ChatMessage;
 import com.example.technology_app.utils.GlobalVariable;
@@ -41,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseFirestore db;
     ChatAdapter chatAdapter;
     List<ChatMessage> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +55,23 @@ public class ChatActivity extends AppCompatActivity {
         insertUser();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish ChatActivity
+    }
+
     private void insertUser() {
-        if(Paper.book().read("userId") != null && Paper.book().read("email") != null){
+        if (Paper.book().read("userId") != null && Paper.book().read("email") != null) {
             HashMap<String, Object> user = new HashMap<>();
             user.put("id", Paper.book().read("userId"));
             user.put("userName", Paper.book().read("email"));
-            //db.collection("users").document(Objects.requireNonNull(Paper.book().read("userId")));
             db.collection("users").document(Objects.requireNonNull(Paper.book().read("userId"))).set(user);
-        }else{
+        } else {
             Log.d("Insert User faild", "no have userId or email");
         }
-
     }
 
     private void initControl() {
@@ -76,25 +85,24 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMessToFireStore() {
         String strMess = edtInputChat.getText().toString().trim();
-        if(TextUtils.isEmpty(strMess)){
-
-        }else{
+        if (TextUtils.isEmpty(strMess)) {
+            // No message to send
+        } else {
             HashMap<String, Object> message = new HashMap<>();
-            if(Paper.book().read("userId") != null){
+            if (Paper.book().read("userId") != null) {
                 message.put(GlobalVariable.SEND_ID, Paper.book().read("userId"));
-                //sai
                 message.put(GlobalVariable.RECEIVED_ID, GlobalVariable.ID_RECEIVED);
                 message.put(GlobalVariable.MESS, strMess);
                 message.put(GlobalVariable.DATE_TIME, new Date());
                 db.collection(GlobalVariable.MESS).add(message);
                 edtInputChat.setText("");
-            }else{
+            } else {
                 Log.d("No have userId Chat Screen", "userId null");
             }
         }
     }
 
-    private void listenMess(){
+    private void listenMess() {
         db.collection(GlobalVariable.CHAT_PATH)
                 .whereEqualTo(GlobalVariable.SEND_ID, Paper.book().read("userId"))
                 .whereEqualTo(GlobalVariable.RECEIVED_ID, GlobalVariable.ID_RECEIVED)
@@ -107,23 +115,23 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private final EventListener<QuerySnapshot> eventListener = (value, error) ->{
-        if(error != null){
+    private final EventListener<QuerySnapshot> eventListener = (value, error) -> {
+        if (error != null) {
             return;
         }
-        if(value != null){
+        if (value != null) {
             int count = list.size();
             Log.d("FirestoreData", "Data: " + value.getDocumentChanges());
 
-            for(DocumentChange documentChange : value.getDocumentChanges()){
+            for (DocumentChange documentChange : value.getDocumentChanges()) {
                 Log.d("check", "true");
-                if(documentChange.getType() == DocumentChange.Type.ADDED){
+                if (documentChange.getType() == DocumentChange.Type.ADDED) {
                     ChatMessage chatMessage = new ChatMessage();
-                    Log.d("FirestoreData1", "Data: " + documentChange.getDocument().getString(GlobalVariable.SEND_ID).toString());
+                    Log.d("FirestoreData1", "Data: " + Objects.requireNonNull(documentChange.getDocument().getString(GlobalVariable.SEND_ID)));
 
                     chatMessage.sendId = documentChange.getDocument().getString(GlobalVariable.SEND_ID);
                     chatMessage.receivedId = documentChange.getDocument().getString(GlobalVariable.RECEIVED_ID);
-                    chatMessage.mess  = documentChange.getDocument().getString(GlobalVariable.MESS);
+                    chatMessage.mess = documentChange.getDocument().getString(GlobalVariable.MESS);
                     chatMessage.dateObj = documentChange.getDocument().getDate(GlobalVariable.DATE_TIME);
                     chatMessage.dateTime = formatDate(documentChange.getDocument().getDate(GlobalVariable.DATE_TIME));
                     list.add(chatMessage);
@@ -131,9 +139,9 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
             list.sort(Comparator.comparing(obj -> obj.dateObj));
-            if(count == 0){
+            if (count == 0) {
                 chatAdapter.notifyDataSetChanged();
-            }else{
+            } else {
                 chatAdapter.notifyItemRangeInserted(list.size(), list.size());
                 recyclerView.smoothScrollToPosition(list.size() - 1);
                 chatAdapter.notifyDataSetChanged();
@@ -141,8 +149,8 @@ public class ChatActivity extends AppCompatActivity {
         }
     };
 
-    private String formatDate(Date date){
-        return new SimpleDateFormat("MMM dd, yyy- hh:mm a", Locale.getDefault()).format(date);
+    private String formatDate(Date date) {
+        return new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
 
     private void initView() {

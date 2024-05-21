@@ -7,6 +7,8 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -48,11 +50,14 @@ import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class PaymentActivity extends AppCompatActivity {
     Button btnCheckout, btnCheckoutZalopay;
+    EditText edtEmail;
+    TextView txtTotal, txtEmail;
     Api api;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     ProductOrder productOrder;
     List<ProductOrder.Item> productOrderItems;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +92,13 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void pushNotification(){
+        String tokenNew = Paper.book().read("firebaseToken");
+
         String token = "cT08FWn7REavpLCXzgsl1c:APA91bGmyvSkQszBnczPNDehYviMGL-bMnOEi4EyEMuBqDlpyv6D0qMouXbXG-DVIeR_TjBe85Ml4Qe1_IVbTa0amE0Kd7FDjmCZEvfs24f85-gP7QbzH7_vViXW85mLnMlrf1nomUn-";
         Map<String, String> data = new HashMap<>();
         data.put("title", "Notification");
         data.put("body", "you have placed your order.");
-        NotiSendData notiSendData = new NotiSendData(token, data);
+        NotiSendData notiSendData = new NotiSendData(tokenNew, data);
         ApiPushNotification apiPushNotification = RetrofitClientPushNoti.getInstance().create(ApiPushNotification.class);
         compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
                 .subscribeOn(Schedulers.io())
@@ -195,7 +202,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("checkout", new Checkout(totalPrice, 0, 0, totalPrice));
-        requestBody.put("shipping_address", "HCM");
+        requestBody.put("shipping_address", edtEmail.getText().toString());
         requestBody.put("payment", new Payment(method));
         requestBody.put("coin", 0);
         requestBody.put("voucher", null);
@@ -239,6 +246,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        Paper.init(this);
+        email = Paper.book().read("email");
         btnCheckout = findViewById(R.id.btnCheckout);
         btnCheckoutZalopay = findViewById(R.id.btnCheckoutZalopay);
         api = RetrofitClient.getInstance(GlobalVariable.BASE_URL).create(Api.class);
@@ -248,7 +257,18 @@ public class PaymentActivity extends AppCompatActivity {
                 .collect(Collectors.toList());
 
         productOrder = new ProductOrder(productOrderItems);
-
+        edtEmail = findViewById(R.id.inputLocation);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtTotal = findViewById(R.id.txtTotalPricePayment);
+        int totalPrice = getIntent().getIntExtra("totalPrice", 0);;
+        Log.d("Check123", String.valueOf(totalPrice));
+        txtEmail.setText(email);
+        txtTotal.setText(String.valueOf(totalPrice));
+//        if (txtTotal) {
+//            Log.d("PaymentActivity", "totalPrice is null");
+//        } else {
+//            txtTotal.setText(String.valueOf(totalPrice));
+//        }
     }
 
     @Override

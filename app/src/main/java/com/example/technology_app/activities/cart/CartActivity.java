@@ -131,7 +131,6 @@ public class CartActivity extends AppCompatActivity {
             Log.d("CheckLengCartList", "Empty Cart");
             emptyCart.setVisibility(View.VISIBLE);
         } else {
-            Log.d("CheckLengCartList", "" + cartList.size());
             cartAdapter = new CartAdapter(getApplicationContext(), cartList);
             recyclerView.setAdapter(cartAdapter);
         }
