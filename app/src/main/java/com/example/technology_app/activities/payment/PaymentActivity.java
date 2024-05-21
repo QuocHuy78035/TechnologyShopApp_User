@@ -114,6 +114,30 @@ public class PaymentActivity extends AppCompatActivity {
                 )
         );
     }
+
+    private void pushNotificationForUser(){
+        //String tokenNew = Paper.book().read("firebaseToken");
+
+        String token = "cT08FWn7REavpLCXzgsl1c:APA91bFTFGWBMwUZKGd4LDUETDIfoXl-g8GbtzAb31K1f38Hb5fk_URUHrF6zHcT5H1M0B7ljfKdgR-zdHbHjQIjmmFcMuRsgNyzsbjCckH9z7EbpEL4_qprgnLmu8oXyMPE7U9bKbJT";
+        Map<String, String> data = new HashMap<>();
+        data.put("title", "Notification");
+        data.put("body", "you have placed your order.");
+        NotiSendData notiSendData = new NotiSendData(token, data);
+        ApiPushNotification apiPushNotification = RetrofitClientPushNoti.getInstance().create(ApiPushNotification.class);
+        compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        notiResponse -> {
+
+                        },
+                        throwable -> {
+                            Log.d( "Log","123"+ throwable.getMessage());
+                            Toast.makeText(getApplicationContext(), "Loi!!!" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
+    }
     private void requestPaymentZalopay(){
         CreateOrder orderApi = new CreateOrder();
         int totalPrice = getIntent().getIntExtra("totalPrice", 0);
@@ -217,6 +241,7 @@ public class PaymentActivity extends AppCompatActivity {
                             if (Objects.equals(orderModel.getStatus(), "201")) {
                                 Log.d("Success", "Create order success");
                                 pushNotification();
+                                pushNotificationForUser();
                                 GlobalVariable.listCartBuy.clear();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
