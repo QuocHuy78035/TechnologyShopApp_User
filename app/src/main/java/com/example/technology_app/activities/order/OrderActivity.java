@@ -1,5 +1,6 @@
 package com.example.technology_app.activities.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technology_app.R;
+import com.example.technology_app.activities.chat.ChatActivity;
+import com.example.technology_app.activities.main.MainActivity;
 import com.example.technology_app.adapters.OrderAdapter;
 import com.example.technology_app.models.GetOrder.GetOrderModel;
 import com.example.technology_app.retrofit.Api;
@@ -50,9 +53,18 @@ public class OrderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish ChatActivity
     }
 
     private void initControl() {
